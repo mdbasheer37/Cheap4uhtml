@@ -9,6 +9,18 @@ or deploy the folder as-is to any static host.
 Just open `index.html` in a browser, or serve the folder with any static
 file server (e.g. `python3 -m http.server`). No build/install step.
 
+## Deploying on Render (or any static host)
+
+- **Publish directory:** `.` (repo root — `index.html` lives at the top level, not in a `frontend` subfolder)
+- **Build command:** leave empty (pure static site, no build step)
+
+Folder names are `CSS/` and `JS/` (capitalized) — every HTML file
+references them with matching capitalization. Linux hosts (Render,
+GitHub Pages, etc.) are case-sensitive, so if you ever rename these
+folders, update every `href="CSS/…"` / `src="JS/…"` reference to match,
+or the assets will 404 even though everything looks fine locally on
+Windows/Mac.
+
 ## Changing the backend URL
 
 Edit **one line**, in `js/config.js`:
