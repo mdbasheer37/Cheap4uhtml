@@ -29,11 +29,6 @@ async function loadHistory() {
     }
   } catch { /* fine to start with just the greeting */ }
 
-  try {
-    const res = await Api.chat.contactInfo();
-    const d = res.data;
-    document.getElementById('contactInfoLine').textContent = `${d.business_hours} · ${d.phone}`;
-  } catch { /* non-fatal */ }
 }
 
 async function sendMessage(e) {

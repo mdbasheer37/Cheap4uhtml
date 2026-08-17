@@ -141,3 +141,13 @@ const Utils = (() => {
     qparam, esc, debounce,
   };
 })();
+
+// Apply the device-local dark theme preference (set via Profile → Themes)
+// on every page load — matches the real app's persisted theme choice.
+(function applyStoredTheme() {
+  try {
+    if (localStorage.getItem('c4u_theme') === 'dark') {
+      document.documentElement.classList.add('theme-dark');
+    }
+  } catch { /* localStorage unavailable — ignore */ }
+})();

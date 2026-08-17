@@ -234,5 +234,60 @@ const Api = (() => {
       feedback: (data) => post('/api/chat/feedback', data),
       contactInfo: () => get('/api/chat/contact-info', null, { skipAuth: true }),
     },
+
+    // ── DOLLAR CARD (card_routes.py, prefix /api/cards) ───────────────
+    cards: {
+      config: () => get('/api/cards/config'),
+      list: () => get('/api/cards'),
+      create: (data) => post('/api/cards', data),
+      get: (cardId) => get(`/api/cards/${cardId}`),
+      fund: (cardId, data) => post(`/api/cards/${cardId}/fund`, data),
+      freeze: (cardId) => post(`/api/cards/${cardId}/freeze`, {}),
+      unfreeze: (cardId) => post(`/api/cards/${cardId}/unfreeze`, {}),
+      remove: (cardId) => del(`/api/cards/${cardId}`),
+      history: (cardId, params) => get(`/api/cards/${cardId}/transactions`, params),
+    },
+
+    // ── PRICE COMPARISON (comparison_routes.py, prefix /api/compare) ──
+    compare: {
+      data: (params) => get('/api/compare/data', params),
+      airtime: (params) => get('/api/compare/airtime', params),
+    },
+
+    // ── REWARDS / GAMIFICATION (gamification_routes.py, prefix /api/gamification) ──
+    gamification: {
+      summary: () => get('/api/gamification/summary'),
+      levels: () => get('/api/gamification/levels'),
+      missions: () => get('/api/gamification/missions'),
+      myBadges: () => get('/api/gamification/badges'),
+      allBadges: () => get('/api/gamification/badges/all'),
+      leaderboard: (params) => get('/api/gamification/leaderboard', params),
+    },
+
+    // ── MERCHANT (merchant_routes.py, prefix /api/merchant) ───────────
+    merchant: {
+      apply: (data) => post('/api/merchant/apply', data),
+      profile: () => get('/api/merchant/profile'),
+      wallet: () => get('/api/merchant/wallet'),
+      bulkAirtime: (data) => post('/api/merchant/bulk/airtime', data),
+      bulkData: (data) => post('/api/merchant/bulk/data', data),
+      bulkElectricity: (data) => post('/api/merchant/bulk/electricity', data),
+      bulkCableTv: (data) => post('/api/merchant/bulk/cable-tv', data),
+      bulkExamPin: (data) => post('/api/merchant/bulk/exam-pin', data),
+      bulkJobs: (params) => get('/api/merchant/bulk/jobs', params),
+      bulkJobDetail: (jobId) => get(`/api/merchant/bulk/jobs/${jobId}`),
+      profitAnalytics: (params) => get('/api/merchant/analytics/profit', params),
+      transactionReport: (params) => get('/api/merchant/reports/transactions', params),
+      regenerateApiKey: () => post('/api/merchant/api-key/regenerate', {}),
+    },
+
+    // ── BILL REMINDERS (reminder_routes.py, prefix /api/reminders) ────
+    reminders: {
+      list: () => get('/api/reminders'),
+      create: (data) => post('/api/reminders', data),
+      update: (id, data) => put(`/api/reminders/${id}`, data),
+      remove: (id) => del(`/api/reminders/${id}`),
+      history: (params) => get('/api/reminders/history', params),
+    },
   };
 })();

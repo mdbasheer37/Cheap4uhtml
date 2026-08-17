@@ -1,66 +1,76 @@
 /**
- * profile.js — Profile & Settings.
- *
- * User fields come from the cached login/register response (User.to_dict
- * in models.py) — there is no GET /api/auth/me endpoint in the backend,
- * so the cached copy from login/register/OTP-verify is the freshest data
- * available without re-authenticating.
- *
- * PIN set/change uses POST /api/auth/set-pin { old_pin, new_pin }.
- *
- * Privacy Policy / Terms of Service / Delete Account are server-rendered
- * HTML pages hosted directly by the Flask backend (public_pages.py) —
- * not JSON endpoints — so they are linked out to directly rather than
- * fetched and re-rendered.
+ * profile.js — Profile menu. Set-PIN calls the real backend
+ * (POST /api/auth/set-pin). Themes and notification toggle are genuine
+ * device-local features in the real app too (no backend field for
+ * either) — replicated here via localStorage. Security/Legal are static
+ * info, and Account Deletion / Privacy / Terms link to the backend's own
+ * server-rendered pages (public_pages.py), matching the original.
  */
 
-function initials(name) {
-  if (!name) return '?';
-  const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase();
+function applyTheme() {
+  const dark = localStorage.getItem('c4u_theme') === 'dark';
+  document.documentElement.classList.toggle('theme-dark', dark);
 }
+applyTheme();
 
-function renderProfile() {
-  const user = Api.getUser();
-  if (!user) return;
-  document.getElementById('bigAvatar').textContent = initials(user.name);
-  document.getElementById('profName').textContent = user.name || '—';
-  document.getElementById('profEmail').textContent = user.email || '—';
-  document.getElementById('profPhone').textContent = user.phone || '—';
-  document.getElementById('profRefCode').textContent = user.referral_code || '—';
-  document.getElementById('profJoined').textContent = user.joined_date || '—';
-  document.getElementById('profLastLogin').textContent = user.last_login || '—';
-  document.getElementById('verifiedBadge').style.display = user.is_verified ? '' : 'none';
-  document.getElementById('premiumBadge').style.display = user.is_premium ? '' : 'none';
+document.getElementById('themesItem')?.addEventListener('click', () => {
+  const current = localStorage.getItem('c4u_theme') === 'dark' ? 'dark' : 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('c4u_theme', next);
+  applyTheme();
+  Utils.toast(`Switched to ${next} theme`, 'success');
+});
 
-  document.getElementById('privacyLink').href = CONFIG.API_BASE_URL + '/privacy-policy';
-  document.getElementById('termsLink').href = CONFIG.API_BASE_URL + '/terms-of-service';
-  document.getElementById('deleteAccountLink').href = CONFIG.API_BASE_URL + '/delete-account';
-}
+document.getElementById('settingsItem')?.addEventListener('click', () => {
+  document.getElementById('notifToggle').checked = localStorage.getItem('c4u_notifications') !== 'off';
+  Utils.openModal('settingsModal');
+});
 
-async function submitPin(e) {
+window.saveLocalSettings = function () {
+  const enabled = document.getElementById('notifToggle').checked;
+  localStorage.setItem('c4u_notifications', enabled ? 'on' : 'off');
+  Utils.closeModal('settingsModal');
+  Utils.toast('Settings saved!', 'success');
+};
+
+document.getElementById('securityItem')?.addEventListener('click', () => {
+  alert('Security Options:\n\n• Set Transaction PIN — Profile → Set Transaction PIN\n• Change Password — Login screen → Forgot Password\n• Always logout after use\n• Never share your PIN or password');
+});
+
+document.getElementById('legalItem')?.addEventListener('click', () => {
+  if (confirm('View Privacy Policy? (Cancel to view Terms of Service instead)')) {
+    window.open(CONFIG.API_BASE_URL + '/privacy-policy', '_blank');
+  } else {
+    window.open(CONFIG.API_BASE_URL + '/terms-of-service', '_blank');
+  }
+});
+
+document.getElementById('deleteAccountItem')?.addEventListener('click', () => {
+  window.open(CONFIG.API_BASE_URL + '/delete-account', '_blank');
+});
+
+document.getElementById('setPinItem')?.addEventListener('click', () => {
+  document.getElementById('pinForm').reset();
+  Utils.openModal('pinModal');
+});
+
+document.getElementById('pinForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const old_pin = document.getElementById('oldPin').value.trim();
   const new_pin = document.getElementById('newPin').value.trim();
-
-  const valid = Utils.isValidPin(new_pin);
-  document.getElementById('f-newpin').classList.toggle('has-error', !valid);
-  if (!valid) return;
+  if (!Utils.isValidPin(new_pin)) { Utils.toast('New PIN must be 4–6 digits', 'error'); return; }
 
   const btn = document.getElementById('pinBtn');
   Utils.setButtonLoading(btn, true, 'Saving…');
   try {
     const res = await Api.auth.setPin({ old_pin: old_pin || undefined, new_pin });
     Utils.toast(res.message || 'PIN saved', 'success');
-    document.getElementById('pinForm').reset();
+    Utils.closeModal('pinModal');
   } catch (err) {
     Utils.toast(err.message, 'error');
   } finally {
     Utils.setButtonLoading(btn, false);
   }
-}
-
-Auth.guard(async () => {
-  renderProfile();
-  document.getElementById('pinForm').addEventListener('submit', submitPin);
 });
+
+Auth.requireAuth();

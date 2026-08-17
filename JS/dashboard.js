@@ -1,95 +1,98 @@
 /**
- * dashboard.js — loads live wallet/referral/cashback/account data and
- * recent transactions. Every figure here comes from the backend; nothing
- * is hardcoded.
+ * dashboard.js — Home screen. Wallet balance, referral balance, and the
+ * Monthly Champion Challenge card all come from live API responses.
  */
 
-const SERVICE_ICONS = {
-  airtime: '📱', data: '📶', electricity: '⚡', cable_tv: '📺', exam_pin: '🎓',
-  wallet_funding: '💳', card_payment: '💳', bank_transfer: '🏦', referral_bonus: '🤝',
-  airtime_to_cash: '🔄',
-};
-
-function renderTxnRow(t) {
-  const icon = SERVICE_ICONS[t.service_type] || '💸';
-  const isCredit = t.type === 'wallet_funding';
-  const label = (t.service_type || t.type || 'transaction').replace(/_/g, ' ');
-  return `
-    <div class="txn-row">
-      <div class="txn-row__icon">${icon}</div>
-      <div class="txn-row__body">
-        <div class="txn-row__title">${Utils.esc(label)}</div>
-        <div class="txn-row__meta">${Utils.esc(t.reference || '')} · ${Utils.dateFmt(t.created_at || t.date)}</div>
-      </div>
-      <div>
-        <div class="txn-row__amount" style="color:${isCredit ? 'var(--green-600)' : 'var(--gray-900)'}">
-          ${isCredit ? '+' : '-'}${Utils.money(t.amount)}
-        </div>
-        <div style="text-align:right;margin-top:4px;">${Utils.statusBadge(t.status)}</div>
-      </div>
-    </div>`;
+function fmtCountdown(seconds) {
+  if (!seconds || seconds <= 0) return 'Ended';
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  return `${d}d ${h}h ${String(m).padStart(2, '0')}m`;
 }
 
 async function loadDashboard() {
-  // Account details (wallet balance + virtual account)
+  const user = Api.getUser();
+  document.getElementById('greetingName').textContent = `Hi ${user?.name ? user.name.split(' ')[0] : 'there'}`;
+
+  renderTileGrid(document.getElementById('quickActionsGrid'), QUICK_ACTIONS);
+  renderTileGrid(document.getElementById('servicesGrid'), SERVICES, 'grid-tile grid-tile--service');
+
+  // Wallet balance + account number
   try {
     const acc = await Api.payment.accountDetails();
     const d = acc.data;
     document.getElementById('walletBalance').textContent = Utils.money(d.wallet_balance);
 
-    const accCard = document.getElementById('accountDetailsCard');
+    const accCard = document.getElementById('accountNumberCard');
     if (d.has_virtual_account) {
       accCard.innerHTML = `
-        <div class="card-title">Your Virtual Account</div>
-        <p class="small text-muted mb-8">${Utils.esc(d.funding_message || '')}</p>
-        <div class="copyable-row">
-          <span><b>${Utils.esc(d.bank_name)}</b> — ${Utils.esc(d.account_number)} (${Utils.esc(d.account_name || '')})</span>
-          <button data-copy="${Utils.esc(d.account_number)}">Copy</button>
+        <div class="account-number-card__label">Your account number</div>
+        <div class="account-number-row">
+          <span class="ic">🏦</span>
+          <span>${Utils.esc(d.bank_name)} — ${Utils.esc(d.account_number)}</span>
+          <button data-copy="${Utils.esc(d.account_number)}">📋</button>
         </div>`;
       accCard.querySelector('[data-copy]').addEventListener('click', (e) => {
-        Utils.copyToClipboard(e.target.dataset.copy, 'Account number copied');
+        Utils.copyToClipboard(e.currentTarget.dataset.copy, 'Account number copied');
       });
     } else {
       accCard.innerHTML = `
-        <div class="card-title">Fund Your Wallet</div>
-        <p class="small text-muted mb-8">${Utils.esc(d.funding_message || 'Fund your wallet via card payment.')}</p>
-        <a href="wallet.html" class="btn btn-primary btn-sm">Fund Wallet</a>`;
+        <div class="account-number-card__label">Fund your wallet</div>
+        <p class="small text-muted">${Utils.esc(d.funding_message || 'Fund via card payment.')}</p>
+        <a href="wallet.html" class="btn btn-primary btn-sm mt-8">Fund Wallet</a>`;
     }
   } catch (err) {
     document.getElementById('walletBalance').textContent = '₦0.00';
-    if (!(err instanceof Api.ApiError && err.status === 401)) Utils.toast(err.message, 'error');
   }
 
-  // Referral info
+  // Referral balance
   try {
     const ref = await Api.referral.info();
     document.getElementById('referralBalance').textContent = Utils.money(ref.data.referral_balance);
-    document.getElementById('totalReferrals').textContent = ref.data.total_referrals;
-  } catch { /* non-fatal — leave placeholders */ }
+  } catch { /* leave placeholder */ }
 
-  // Cashback wallet
+  // Monthly Champion Challenge
   try {
-    const cb = await Api.cashback.wallet();
-    document.getElementById('cashbackBalance').textContent = Utils.money(cb.data.balance ?? cb.data.cashback_balance ?? 0);
-  } catch { document.getElementById('cashbackBalance').textContent = '₦0.00'; }
-
-  // Account status from cached user
-  const user = Api.getUser();
-  document.getElementById('accountStatus').textContent = user?.is_verified ? 'Verified' : 'Unverified';
-
-  // Recent transactions
-  try {
-    const txns = await Api.vtu.transactions({ limit: 6 });
-    const rows = txns.data || [];
-    const box = document.getElementById('recentTxns');
-    if (!rows.length) {
-      box.innerHTML = `<div class="empty-state"><div class="empty-state__icon">🧾</div><div class="empty-state__title">No transactions yet</div><p>Your recent purchases will show up here.</p></div>`;
-    } else {
-      box.innerHTML = rows.map(renderTxnRow).join('');
-    }
-  } catch (err) {
-    document.getElementById('recentTxns').innerHTML = `<div class="empty-state">Could not load transactions.</div>`;
+    const res = await Api.challenge.mySummary();
+    const d = res.data;
+    document.getElementById('challengeRank').textContent = d.rank ? `#${d.rank}` : 'Unranked';
+    document.getElementById('challengeTotal').textContent = Utils.money(d.total_monthly_purchases);
+    document.getElementById('challengeTimer').textContent = fmtCountdown(d.countdown_seconds);
+    document.getElementById('challengeNote').textContent = d.rank === 1
+      ? "You're in the lead — keep it up!"
+      : d.amount_to_overtake_next != null
+        ? `Spend ${Utils.money(d.amount_to_overtake_next)} more to move up!`
+        : (d.challenge_enabled ? 'Make a purchase to join the leaderboard.' : 'The monthly challenge is currently disabled.');
+  } catch {
+    document.getElementById('challengeNote').textContent = 'Could not load challenge status.';
   }
+
+  // Notifications badge
+  try {
+    const res = await Api.challenge.notifications({});
+    const count = res.data.unread_count || 0;
+    window._notifRows = res.data.notifications || [];
+    document.getElementById('notifDot').classList.toggle('hidden', count === 0);
+  } catch { /* non-fatal */ }
 }
+
+document.getElementById('notifBell').addEventListener('click', async () => {
+  const list = document.getElementById('notifList');
+  const rows = window._notifRows || [];
+  list.innerHTML = rows.length ? rows.map(n => `
+    <div class="txn-row">
+      <div class="txn-row__icon">${n.is_read ? '📭' : '📬'}</div>
+      <div class="txn-row__body">
+        <div class="txn-row__title" style="text-transform:none;">${Utils.esc(n.title || n.message || 'Notification')}</div>
+        <div class="txn-row__meta">${Utils.dateFmt(n.created_at)}</div>
+      </div>
+    </div>`).join('') : `<div class="empty-state small">No notifications yet.</div>`;
+  Utils.openModal('notifModal');
+  try {
+    await Api.challenge.markNotificationsRead({});
+    document.getElementById('notifDot').classList.add('hidden');
+  } catch { /* non-fatal */ }
+});
 
 Auth.guard(loadDashboard);

@@ -1,12 +1,12 @@
 /**
- * auth.js — Page-level authentication guards.
- *
- * Include this on every PROTECTED page (dashboard, services, transactions,
- * etc.) right after api.js + utils.js. It redirects to login.html if there
- * is no stored token. It does not itself verify the token against the
- * backend (the backend does that on every request and 401s are handled
- * centrally in api.js by clearing the session) — but any 401 encountered
- * during the page's own data-loading will bounce the user back to login.
+ * auth.js — Page-level authentication guards, plus the device-local
+ * "Quick PIN" unlock feature that mirrors the real app exactly:
+ * after a full email/password login, the app can save a PIN (hashed
+ * client-side, never sent anywhere) alongside the session token and
+ * user object in local storage. On return visits, entering that PIN
+ * re-hydrates the session without re-typing the password — this is a
+ * pure device-convenience feature with NO backend endpoint involved,
+ * matching Cheap4u.py's attempt_pin_login()/prompt_setup_quick_pin().
  */
 
 const Auth = (() => {
@@ -29,8 +29,6 @@ const Auth = (() => {
     window.location.href = 'login.html';
   }
 
-  // Wrap a page-init async function: if it throws a 401 ApiError, bounce
-  // to login instead of leaving a broken page on screen.
   async function guard(fn) {
     try {
       await fn();
@@ -47,7 +45,45 @@ const Auth = (() => {
   return { requireAuth, redirectIfLoggedIn, logout, guard };
 })();
 
-// Wire up any logout button present on the page automatically.
+const QuickPin = (() => {
+  const KEY = 'c4u_quick_pin';
+
+  async function sha256(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function get() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function save(email, pin, sessionToken, user) {
+    const pin_hash = await sha256(`${pin}:${email.toLowerCase()}`);
+    localStorage.setItem(KEY, JSON.stringify({
+      email: email.toLowerCase(), pin_hash, session_token: sessionToken, user,
+    }));
+  }
+
+  function clear() {
+    localStorage.removeItem(KEY);
+  }
+
+  async function verify(pin) {
+    const data = get();
+    if (!data) return null;
+    const hash = await sha256(`${pin}:${data.email}`);
+    if (hash === data.pin_hash) return data;
+    return null;
+  }
+
+  return { get, save, clear, verify };
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-action="logout"]').forEach((btn) => {
     btn.addEventListener('click', (e) => {
