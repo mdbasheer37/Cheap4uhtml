@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fund Wallet — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="appShell" class="app-shell" data-page="services"></div>
+
+  <main class="main-content" style="max-width:520px;">
+    <div class="balance-card" style="margin-bottom:16px;">
+      <div class="balance-card__label">Wallet Balance</div>
+      <div class="balance-card__amount" id="walletBalance">—</div>
+    </div>
+
+    <div class="card mb-16" id="virtualAccountCard"></div>
+
+    <div class="card">
+      <div class="card-title">Fund via Card</div>
+      <form id="fundForm" novalidate>
+        <div class="field" id="f-amount">
+          <label for="amount">Amount (₦100 – ₦1,000,000)</label>
+          <input class="input" type="number" id="amount" min="100" placeholder="e.g. 5000" required>
+          <div class="field-error">Enter an amount between ₦100 and ₦1,000,000.</div>
+        </div>
+        <div class="chip-row" id="quickAmounts"></div>
+        <button type="submit" class="btn btn-primary btn-block" id="fundBtn">Fund with Card</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/payment.js"></script>
+</body>
+</html>

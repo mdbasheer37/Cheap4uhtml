@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="appShell" class="app-shell" data-page="dashboard"></div>
+
+  <main class="main-content">
+    <div class="balance-card">
+      <div class="balance-card__label">Wallet Balance</div>
+      <div class="balance-card__amount" id="walletBalance"><span class="skel" style="display:inline-block;width:140px;height:28px;"></span></div>
+      <div class="balance-card__actions">
+        <a href="wallet.html" class="btn btn-secondary btn-sm">＋ Fund Wallet</a>
+        <a href="transactions.html" class="btn btn-secondary btn-sm">History</a>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-card__label">Referral Balance</div>
+        <div class="stat-card__value" id="referralBalance">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Cashback Balance</div>
+        <div class="stat-card__value" id="cashbackBalance">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Total Referrals</div>
+        <div class="stat-card__value" id="totalReferrals">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Account Status</div>
+        <div class="stat-card__value" id="accountStatus">—</div>
+      </div>
+    </div>
+
+    <div class="section-header"><h2>Quick Services</h2></div>
+    <div class="quick-grid">
+      <a class="quick-item" href="airtime.html"><div class="quick-item__icon">📱</div><div class="quick-item__label">Airtime</div></a>
+      <a class="quick-item" href="data.html"><div class="quick-item__icon">📶</div><div class="quick-item__label">Data</div></a>
+      <a class="quick-item" href="electricity.html"><div class="quick-item__icon">⚡</div><div class="quick-item__label">Electricity</div></a>
+      <a class="quick-item" href="cable.html"><div class="quick-item__icon">📺</div><div class="quick-item__label">Cable TV</div></a>
+      <a class="quick-item" href="exampin.html"><div class="quick-item__icon">🎓</div><div class="quick-item__label">Exam PIN</div></a>
+      <a class="quick-item" href="airtime-to-cash.html"><div class="quick-item__icon">🔄</div><div class="quick-item__label">Airtime2Cash</div></a>
+    </div>
+
+    <div class="card" id="accountDetailsCard" style="margin-bottom:18px;"></div>
+
+    <div class="section-header">
+      <h2>Recent Transactions</h2>
+      <span class="link-see-all" onclick="window.location.href='transactions.html'">See all</span>
+    </div>
+    <div class="card" id="recentTxns">
+      <div class="skel" style="height:52px;margin-bottom:10px;"></div>
+      <div class="skel" style="height:52px;margin-bottom:10px;"></div>
+      <div class="skel" style="height:52px;"></div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

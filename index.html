@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cheap4U Technology</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="assets/logo.png">
+</head>
+<body style="margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3f7ff;font-family:sans-serif;">
+  <div style="text-align:center;">
+    <img src="assets/logo.png" alt="Cheap4U" style="width:64px;height:64px;border-radius:16px;" onerror="this.style.display='none'">
+    <p style="color:#6b7280;margin-top:14px;">Loading Cheap4U Technology…</p>
+  </div>
+  <script src="js/config.js"></script>
+  <script>
+    const token = localStorage.getItem(CONFIG.STORAGE_KEYS.TOKEN);
+    window.location.replace(token ? 'dashboard.html' : 'login.html');
+  </script>
+</body>
+</html>

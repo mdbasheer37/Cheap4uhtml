@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referral Program — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="appShell" class="app-shell" data-page="referral"></div>
+
+  <main class="main-content">
+    <div class="gradient-card gradient-card--purple mb-16">
+      <div class="balance-card__label">Referral Balance</div>
+      <div class="balance-card__amount" id="referralBalance">—</div>
+      <p class="small mt-8" style="opacity:.9;" id="thresholdMsg"></p>
+      <button class="btn btn-secondary btn-sm mt-16" id="useBonusBtn" style="background:rgba(255,255,255,.22);color:#fff;">Move to Wallet</button>
+    </div>
+
+    <div class="card mb-16">
+      <div class="card-title">Your Referral Code</div>
+      <div class="copyable-row">
+        <span id="refCode">—</span>
+        <button id="copyCodeBtn">Copy</button>
+      </div>
+      <div class="copyable-row">
+        <span id="refLink" style="overflow-wrap:anywhere;">—</span>
+        <button id="copyLinkBtn">Copy</button>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-card__label">Total Referrals</div><div class="stat-card__value" id="totalRef">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Pending</div><div class="stat-card__value" id="pendingRef">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Completed</div><div class="stat-card__value" id="completedRef">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Total Earnings</div><div class="stat-card__value" id="totalEarnings">—</div></div>
+    </div>
+
+    <div class="section-header"><h2>Referred Users</h2></div>
+    <div class="card mb-16" id="referredUsersList"><div class="skel" style="height:50px;"></div></div>
+
+    <div class="section-header"><h2>Bonus History</h2></div>
+    <div class="card" id="referralHistoryList"><div class="skel" style="height:50px;"></div></div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/referral.js"></script>
+</body>
+</html>

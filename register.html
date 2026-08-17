@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card__logo">
+        <img src="assets/logo.png" alt="Cheap4U" onerror="this.style.display='none'">
+        <b>CHEAP4U TECHNOLOGY</b>
+      </div>
+      <h1>Create your account</h1>
+      <p class="sub">Fast, cheap airtime, data, bills and more.</p>
+
+      <form id="registerForm" novalidate>
+        <div class="field" id="f-name">
+          <label for="name">Full name</label>
+          <input class="input" type="text" id="name" placeholder="John Doe" autocomplete="name" required>
+          <div class="field-error">Please enter your full name.</div>
+        </div>
+        <div class="field" id="f-email">
+          <label for="email">Email address</label>
+          <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+        <div class="field" id="f-phone">
+          <label for="phone">Phone number</label>
+          <input class="input" type="tel" id="phone" placeholder="08012345678" maxlength="11" autocomplete="tel" required>
+          <div class="field-error">Phone must be exactly 11 digits.</div>
+        </div>
+        <div class="field" id="f-password">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <input class="input" type="password" id="password" placeholder="Minimum 6 characters" autocomplete="new-password" required>
+            <button type="button" class="input-group__icon" id="togglePw">👁️</button>
+          </div>
+          <div class="field-error">Password must be at least 6 characters.</div>
+        </div>
+        <div class="field" id="f-ref">
+          <label for="ref">Referral code <span class="text-muted">(optional)</span></label>
+          <input class="input" type="text" id="ref" placeholder="e.g. C4U1234">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="registerBtn">Create Account</button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+
+    document.getElementById('togglePw').addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+
+    const refFromLink = Utils.qparam('ref');
+    if (refFromLink) document.getElementById('ref').value = refFromLink;
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const referral_code = document.getElementById('ref').value.trim();
+
+      let valid = true;
+      const setErr = (id, ok) => { document.getElementById(id).classList.toggle('has-error', !ok); if (!ok) valid = false; };
+      setErr('f-name', name.length > 1);
+      setErr('f-email', Utils.isValidEmail(email));
+      setErr('f-phone', Utils.isValidPhone(phone));
+      setErr('f-password', password.length >= 6);
+      if (!valid) return;
+
+      const btn = document.getElementById('registerBtn');
+      Utils.setButtonLoading(btn, true, 'Creating account…');
+      try {
+        const res = await Api.auth.register({ name, email, phone, password, referral_code });
+        Utils.toast(res.message || 'Account created', 'success');
+        window.location.href = `verify-otp.html?user_id=${res.data.user_id}&phone=${encodeURIComponent(res.data.phone || phone)}`;
+      } catch (err) {
+        Utils.toast(err.message, 'error');
+      } finally {
+        Utils.setButtonLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>

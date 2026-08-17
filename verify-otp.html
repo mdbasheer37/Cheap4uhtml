@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card__logo">
+        <img src="assets/logo.png" alt="Cheap4U" onerror="this.style.display='none'">
+        <b>CHEAP4U TECHNOLOGY</b>
+      </div>
+      <h1>Verify your phone</h1>
+      <p class="sub" id="subText">Enter the 6-digit code sent to your phone.</p>
+
+      <form id="otpForm" novalidate>
+        <div class="otp-inputs" id="otpInputs">
+          <input type="tel" inputmode="numeric" maxlength="1">
+          <input type="tel" inputmode="numeric" maxlength="1">
+          <input type="tel" inputmode="numeric" maxlength="1">
+          <input type="tel" inputmode="numeric" maxlength="1">
+          <input type="tel" inputmode="numeric" maxlength="1">
+          <input type="tel" inputmode="numeric" maxlength="1">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="verifyBtn">Verify</button>
+      </form>
+
+      <p class="auth-switch">
+        Didn't get a code?
+        <a id="resendLink">Resend OTP</a>
+        <span id="resendTimer" class="text-muted"></span>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+
+    const userId = Utils.qparam('user_id');
+    const phone = Utils.qparam('phone');
+    if (!userId) window.location.href = 'register.html';
+    if (phone) document.getElementById('subText').textContent = `Enter the 6-digit code sent to ${phone}.`;
+
+    // OTP box auto-advance
+    const inputs = [...document.querySelectorAll('#otpInputs input')];
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '');
+        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) inputs[i - 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        const text = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+        if (text) {
+          e.preventDefault();
+          text.split('').forEach((ch, idx) => { if (inputs[idx]) inputs[idx].value = ch; });
+          inputs[Math.min(text.length, inputs.length) - 1].focus();
+        }
+      });
+    });
+    inputs[0].focus();
+
+    document.getElementById('otpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = inputs.map(i => i.value).join('');
+      if (code.length !== 6) { Utils.toast('Enter the full 6-digit code', 'error'); return; }
+
+      const btn = document.getElementById('verifyBtn');
+      Utils.setButtonLoading(btn, true, 'Verifying…');
+      try {
+        const res = await Api.auth.verifyOtp({ user_id: Number(userId), otp_code: code });
+        Api.setSession(res.data.session_token, res.data.user);
+        Utils.toast('Account verified!', 'success');
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        Utils.toast(err.message, 'error');
+      } finally {
+        Utils.setButtonLoading(btn, false);
+      }
+    });
+
+    let cooldown = 0;
+    const resendLink = document.getElementById('resendLink');
+    const resendTimer = document.getElementById('resendTimer');
+    function tick() {
+      if (cooldown > 0) {
+        resendLink.style.pointerEvents = 'none';
+        resendLink.style.opacity = '0.5';
+        resendTimer.textContent = ` (${cooldown}s)`;
+        cooldown--;
+        setTimeout(tick, 1000);
+      } else {
+        resendLink.style.pointerEvents = '';
+        resendLink.style.opacity = '';
+        resendTimer.textContent = '';
+      }
+    }
+    resendLink.addEventListener('click', async () => {
+      if (cooldown > 0) return;
+      try {
+        const res = await Api.auth.resendOtp({ user_id: Number(userId) });
+        Utils.toast(res.message || 'OTP resent', 'success');
+        cooldown = 60;
+        tick();
+      } catch (err) {
+        Utils.toast(err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>

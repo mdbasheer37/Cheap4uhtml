@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card__logo">
+        <img src="assets/logo.png" alt="Cheap4U" onerror="this.style.display='none'">
+        <b>CHEAP4U TECHNOLOGY</b>
+      </div>
+      <h1>Welcome back</h1>
+      <p class="sub">Log in to manage your wallet and services.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field" id="f-email">
+          <label for="email">Email address</label>
+          <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+        <div class="field" id="f-password">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <input class="input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="input-group__icon" id="togglePw">👁️</button>
+          </div>
+          <div class="field-error">Please enter your password.</div>
+        </div>
+        <div style="text-align:right;margin-bottom:18px;">
+          <a href="forgot-password.html" class="small" style="color:var(--blue-600);font-weight:700;">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Log In</button>
+      </form>
+
+      <p class="auth-switch">Don't have an account? <a href="register.html">Create one</a></p>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+
+    document.getElementById('togglePw').addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      document.getElementById('f-email').classList.toggle('has-error', !Utils.isValidEmail(email));
+      document.getElementById('f-password').classList.toggle('has-error', !password);
+      if (!Utils.isValidEmail(email) || !password) return;
+
+      const btn = document.getElementById('loginBtn');
+      Utils.setButtonLoading(btn, true, 'Logging in…');
+      try {
+        const res = await Api.auth.login({ email, password });
+        Api.setSession(res.data.session_token, res.data.user);
+        Utils.toast('Login successful', 'success');
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        if (err.payload && err.payload.requires_verification) {
+          Utils.toast(err.message, 'warning');
+          window.location.href = `verify-otp.html?user_id=${err.payload.user_id}&phone=${encodeURIComponent(err.payload.phone || '')}`;
+          return;
+        }
+        Utils.toast(err.message, 'error');
+      } finally {
+        Utils.setButtonLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>

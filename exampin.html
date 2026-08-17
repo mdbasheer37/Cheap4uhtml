@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam PIN — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="appShell" class="app-shell" data-page="services"></div>
+
+  <main class="main-content" style="max-width:520px;">
+    <div class="card" id="formCard">
+      <div class="card-title">Buy Exam PIN</div>
+      <label class="small" style="font-weight:700;">Select Exam</label>
+      <div class="provider-grid" id="examGrid"></div>
+
+      <form id="examForm" novalidate>
+        <div class="field">
+          <label for="quantity">Quantity (1–10)</label>
+          <input class="input" type="number" id="quantity" min="1" max="10" value="1" required>
+        </div>
+        <div class="field" id="f-price">
+          <label for="price">Price per PIN (₦)</label>
+          <input class="input" type="number" id="price" min="1" placeholder="Enter the price you were quoted" required>
+          <div class="field-hint">Selling price is set by the backend/admin — enter the amount shown to you for this exam type.</div>
+        </div>
+        <div class="field">
+          <label for="coupon">Coupon code <span class="text-muted">(optional)</span></label>
+          <input class="input" type="text" id="coupon" placeholder="e.g. SAVE100">
+        </div>
+        <div class="summary-list">
+          <div class="summary-row total"><span>Total</span><span id="totalPreview">₦0.00</span></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Continue</button>
+      </form>
+    </div>
+
+    <div class="card hidden" id="resultCard"></div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/purchase.js"></script>
+  <script src="js/exampin.js"></script>
+</body>
+</html>

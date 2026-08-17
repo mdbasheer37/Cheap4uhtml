@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin & Win — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="appShell" class="app-shell" data-page="spin"></div>
+
+  <main class="main-content">
+    <div class="wheel-wrap">
+      <div class="wheel-container">
+        <div class="wheel-pointer">🔻</div>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+      </div>
+      <p class="small text-muted mb-16" id="spinStatusMsg">Loading…</p>
+      <button class="btn btn-primary" id="spinBtn" disabled>Spin the Wheel</button>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-card__label">Free Spins Left</div><div class="stat-card__value" id="freeLeft">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Spins Left Today</div><div class="stat-card__value" id="spinsLeft">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Extra Spin Cost</div><div class="stat-card__value" id="extraCost">—</div></div>
+      <div class="stat-card"><div class="stat-card__label">Used Today</div><div class="stat-card__value" id="usedToday">—</div></div>
+    </div>
+
+    <div class="section-header"><h2>Spin History</h2></div>
+    <div class="card" id="spinHistory"><div class="skel" style="height:50px;"></div></div>
+  </main>
+
+  <div class="modal-backdrop" id="winModal">
+    <div class="modal-sheet">
+      <div class="result-box">
+        <div class="result-box__icon result-box__icon--success" id="winIcon">🎉</div>
+        <h3 id="winTitle">You won!</h3>
+        <p id="winMessage"></p>
+        <button class="btn btn-primary mt-24" onclick="Utils.closeModal('winModal')">Nice!</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/spin.js"></script>
+</body>
+</html>
