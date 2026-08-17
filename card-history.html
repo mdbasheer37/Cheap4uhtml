@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card History — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Card Transactions</div>
+    </div>
+    <div class="page-content page-content--noheader" id="cardHistoryContent">
+      <div class="skel" style="height:60px;margin-bottom:10px;"></div>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/api.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/auth.js"></script>
+  <script>
+    async function loadCardHistory() {
+      const cardId = Utils.qparam('card_id');
+      const box = document.getElementById('cardHistoryContent');
+      if (!cardId) { box.innerHTML = '<div class="empty-state">No card selected.</div>'; return; }
+      try {
+        const res = await Api.cards.history(cardId, { per_page: 50 });
+        const d = res.data;
+        const rows = d.transactions || [];
+        box.innerHTML = `<div class="card">` + (rows.length ? rows.map(t => `
+          <div class="txn-row">
+            <div class="txn-row__icon">${t.type === 'funding' ? '⬆️' : t.type === 'withdrawal' ? '⬇️' : '💳'}</div>
+            <div class="txn-row__body">
+              <div class="txn-row__title">${Utils.esc(t.type)}</div>
+              <div class="txn-row__meta">${Utils.esc(t.description || '')} · ${Utils.dateFmt(t.created_at)}</div>
+            </div>
+            <div class="txn-row__amount">$${Number(t.amount).toFixed(2)}</div>
+          </div>`).join('') : `<div class="empty-state small">No transactions on this card yet.</div>`) + `</div>`;
+      } catch (err) {
+        box.innerHTML = `<div class="empty-state">Could not load card history: ${Utils.esc(err.message)}</div>`;
+      }
+    }
+    Auth.guard(loadCardHistory);
+  </script>
+</body>
+</html>

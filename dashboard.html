@@ -8,65 +8,75 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="dashboard"></div>
+  <div class="app-wrap">
+    <div class="home-header">
+      <div class="home-header__greeting">
+        <span class="ic">👤</span>
+        <span id="greetingName">Hi there</span>
+      </div>
+      <button class="home-header__bell" id="notifBell">🔔<span class="notif-dot hidden" id="notifDot"></span></button>
+    </div>
 
-  <main class="main-content">
     <div class="balance-card">
       <div class="balance-card__label">Wallet Balance</div>
-      <div class="balance-card__amount" id="walletBalance"><span class="skel" style="display:inline-block;width:140px;height:28px;"></span></div>
-      <div class="balance-card__actions">
-        <a href="wallet.html" class="btn btn-secondary btn-sm">＋ Fund Wallet</a>
-        <a href="transactions.html" class="btn btn-secondary btn-sm">History</a>
+      <div class="balance-card__amount" id="walletBalance"><span class="skel" style="display:inline-block;width:120px;height:26px;"></span></div>
+      <div class="balance-card__refrow">
+        <span>Referral Balance</span>
+        <span id="referralBalance">₦0.00</span>
       </div>
     </div>
 
-    <div class="stat-row">
-      <div class="stat-card">
-        <div class="stat-card__label">Referral Balance</div>
-        <div class="stat-card__value" id="referralBalance">—</div>
+    <div class="challenge-card">
+      <div class="challenge-card__top">
+        <div class="challenge-card__title">Monthly Champion Challenge</div>
+        <div class="challenge-card__timer" id="challengeTimer">—</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card__label">Cashback Balance</div>
-        <div class="stat-card__value" id="cashbackBalance">—</div>
+      <div class="challenge-card__stats">
+        <div>
+          <div class="challenge-card__stat-label">Your Rank</div>
+          <div class="challenge-card__stat-value" id="challengeRank">—</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="challenge-card__stat-label">Monthly Purchases</div>
+          <div class="challenge-card__stat-value" id="challengeTotal">—</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card__label">Total Referrals</div>
-        <div class="stat-card__value" id="totalReferrals">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__label">Account Status</div>
-        <div class="stat-card__value" id="accountStatus">—</div>
+      <div class="challenge-card__note" id="challengeNote"></div>
+      <div class="challenge-card__actions">
+        <a href="challenge.html" class="btn btn-white">VIEW LEADERBOARD</a>
       </div>
     </div>
 
-    <div class="section-header"><h2>Quick Services</h2></div>
-    <div class="quick-grid">
-      <a class="quick-item" href="airtime.html"><div class="quick-item__icon">📱</div><div class="quick-item__label">Airtime</div></a>
-      <a class="quick-item" href="data.html"><div class="quick-item__icon">📶</div><div class="quick-item__label">Data</div></a>
-      <a class="quick-item" href="electricity.html"><div class="quick-item__icon">⚡</div><div class="quick-item__label">Electricity</div></a>
-      <a class="quick-item" href="cable.html"><div class="quick-item__icon">📺</div><div class="quick-item__label">Cable TV</div></a>
-      <a class="quick-item" href="exampin.html"><div class="quick-item__icon">🎓</div><div class="quick-item__label">Exam PIN</div></a>
-      <a class="quick-item" href="airtime-to-cash.html"><div class="quick-item__icon">🔄</div><div class="quick-item__label">Airtime2Cash</div></a>
+    <div class="account-number-card" id="accountNumberCard">
+      <div class="account-number-card__label">Your account number</div>
+      <div class="skel" style="height:24px;"></div>
     </div>
 
-    <div class="card" id="accountDetailsCard" style="margin-bottom:18px;"></div>
+    <div class="section-title">Quick Actions</div>
+    <div class="grid-4" id="quickActionsGrid"></div>
 
-    <div class="section-header">
-      <h2>Recent Transactions</h2>
-      <span class="link-see-all" onclick="window.location.href='transactions.html'">See all</span>
+    <div class="section-title">Services</div>
+    <div class="grid-3" id="servicesGrid"></div>
+
+    <div id="bottomNav" data-page="dashboard"></div>
+  </div>
+
+  <div class="modal-backdrop" id="notifModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Notifications</div>
+        <button class="modal-close" onclick="Utils.closeModal('notifModal')">✕</button>
+      </div>
+      <div id="notifList"></div>
     </div>
-    <div class="card" id="recentTxns">
-      <div class="skel" style="height:52px;margin-bottom:10px;"></div>
-      <div class="skel" style="height:52px;margin-bottom:10px;"></div>
-      <div class="skel" style="height:52px;"></div>
-    </div>
-  </main>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
   <script src="JS/app.js"></script>
+  <script src="JS/nav-grids.js"></script>
   <script src="JS/dashboard.js"></script>
 </body>
 </html>

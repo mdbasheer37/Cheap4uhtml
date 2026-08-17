@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="coupons"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Coupons</div>
+    </div>
 
-  <main class="main-content">
+    <div class="page-content page-content--noheader">
     <div class="card mb-16">
       <div class="card-title">Validate a Coupon</div>
       <form id="validateForm" class="flex gap-8" style="flex-wrap:wrap;">
@@ -34,13 +38,13 @@
 
     <div class="section-header"><h2>Spin & Win Coupons</h2></div>
     <div class="card" id="spinCoupons"><div class="skel" style="height:50px;"></div></div>
-  </main>
+  </div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/coupons.js"></script>
 </body>
 </html>

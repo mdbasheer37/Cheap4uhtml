@@ -3,43 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transactions — Cheap4U Technology</title>
+<title>History — Cheap4U Technology</title>
 <link rel="icon" href="assets/logo.png">
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="transactions"></div>
-
-  <main class="main-content">
-    <div class="filter-bar">
-      <input class="input" type="text" id="searchInput" placeholder="Search by reference…">
-      <select class="input" id="serviceFilter">
-        <option value="">All services</option>
-        <option value="airtime">Airtime</option>
-        <option value="data">Data</option>
-        <option value="electricity">Electricity</option>
-        <option value="cable_tv">Cable TV</option>
-        <option value="exam_pin">Exam PIN</option>
-        <option value="card_payment">Wallet Funding</option>
-      </select>
-      <select class="input" id="statusFilter">
-        <option value="">All statuses</option>
-        <option value="success">Success</option>
-        <option value="pending">Pending</option>
-        <option value="failed">Failed</option>
-      </select>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <div class="simple-topbar__title">Transaction History</div>
     </div>
 
-    <div class="card" id="txnList">
-      <div class="skel" style="height:60px;margin-bottom:10px;"></div>
-      <div class="skel" style="height:60px;margin-bottom:10px;"></div>
-      <div class="skel" style="height:60px;"></div>
+    <div class="page-content page-content--noheader">
+      <div class="filter-bar">
+        <input class="input" type="text" id="searchInput" placeholder="Search by reference…">
+        <select class="input" id="serviceFilter">
+          <option value="">All services</option>
+          <option value="airtime">Airtime</option>
+          <option value="data">Data</option>
+          <option value="electricity">Electricity</option>
+          <option value="cable_tv">Cable TV</option>
+          <option value="exam_pin">Exam PIN</option>
+          <option value="card_payment">Wallet Funding</option>
+        </select>
+        <select class="input" id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="success">Success</option>
+          <option value="pending">Pending</option>
+          <option value="failed">Failed</option>
+        </select>
+      </div>
+
+      <div class="card" id="txnList">
+        <div class="skel" style="height:60px;margin-bottom:10px;"></div>
+        <div class="skel" style="height:60px;margin-bottom:10px;"></div>
+        <div class="skel" style="height:60px;"></div>
+      </div>
+
+      <div class="pagination">
+        <button class="btn btn-outline btn-sm" id="loadMoreBtn">Load more</button>
+      </div>
     </div>
 
-    <div class="pagination">
-      <button class="btn btn-outline btn-sm" id="loadMoreBtn">Load more</button>
-    </div>
-  </main>
+    <div id="bottomNav" data-page="transactions"></div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>

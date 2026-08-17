@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Balance Codes — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">USSD Codes for Data Balance</div>
+    </div>
+    <div class="page-content page-content--noheader">
+      <div class="card" id="codesList"></div>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/utils.js"></script>
+  <script>
+    const BALANCE_CODES = [
+      { network: 'MTN', type: 'Awoof', code: '*460*260#' },
+      { network: 'MTN', type: 'CG', code: '*460*260#' },
+      { network: 'MTN', type: 'Gifting', code: '*323*4#' },
+      { network: 'Airtel', type: 'Awoof', code: '*323#' },
+      { network: 'Airtel', type: 'CG', code: '*323#' },
+      { network: 'Glo', type: 'General', code: '*127*0#' },
+      { network: 'Glo', type: 'Alternative', code: '*323#' },
+      { network: '9mobile', type: 'Gifting', code: '*323#' },
+    ];
+    document.getElementById('codesList').innerHTML = BALANCE_CODES.map(c => `
+      <div class="summary-row">
+        <span>${c.network} — ${c.type}</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <b>${c.code}</b>
+          <button style="background:none;border:none;color:var(--blue);font-weight:700;cursor:pointer;" onclick="Utils.copyToClipboard('${c.code}','Code copied')">📋</button>
+        </span>
+      </div>`).join('');
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bill Reminders — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Bill Reminders</div>
+    </div>
+
+    <div class="page-content page-content--noheader">
+      <button class="btn btn-primary btn-block mb-16" id="addReminderBtn">+ Add Reminder</button>
+      <div id="remindersList"><div class="skel" style="height:70px;margin-bottom:10px;"></div></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="reminderModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">New Bill Reminder</div>
+        <button class="modal-close" onclick="Utils.closeModal('reminderModal')">✕</button>
+      </div>
+      <form id="reminderForm" novalidate>
+        <div class="field">
+          <label for="billType">Bill type</label>
+          <select class="input" id="billType">
+            <option value="dstv">DSTV</option>
+            <option value="gotv">GOtv</option>
+            <option value="startimes">StarTimes</option>
+            <option value="electricity">Electricity</option>
+            <option value="internet">Internet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nickname">Nickname <span class="text-muted">(optional)</span></label>
+          <input class="input" type="text" id="nickname" placeholder="e.g. Home DSTV">
+        </div>
+        <div class="field">
+          <label for="accountId">Account / Meter / Smartcard number</label>
+          <input class="input" type="text" id="accountId" required>
+        </div>
+        <div class="field">
+          <label for="dueDay">Due day of month (1–31)</label>
+          <input class="input" type="number" id="dueDay" min="1" max="31" required>
+        </div>
+        <div class="field">
+          <label for="estAmount">Estimated amount <span class="text-muted">(optional)</span></label>
+          <input class="input" type="number" id="estAmount" min="0">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="saveReminderBtn">Save Reminder</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/api.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/auth.js"></script>
+  <script src="JS/reminders.js"></script>
+</body>
+</html>

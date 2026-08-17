@@ -8,32 +8,29 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div class="auth-page">
-    <div class="auth-card">
-      <div class="auth-card__logo">
-        <img src="assets/logo.png" alt="Cheap4U" onerror="this.style.display='none'">
-        <b>CHEAP4U TECHNOLOGY</b>
+  <div class="app-wrap auth-page">
+    <div class="blob-header blob-header--dark">
+      <h1>Verify Your Phone</h1>
+    </div>
+
+    <div class="auth-card-wrap">
+      <div class="auth-card">
+        <p class="text-center text-muted small mb-16" id="subText">Enter the 6-digit code sent to your phone.</p>
+        <form id="otpForm" novalidate>
+          <div class="otp-inputs" id="otpInputs">
+            <input type="tel" inputmode="numeric" maxlength="1">
+            <input type="tel" inputmode="numeric" maxlength="1">
+            <input type="tel" inputmode="numeric" maxlength="1">
+            <input type="tel" inputmode="numeric" maxlength="1">
+            <input type="tel" inputmode="numeric" maxlength="1">
+            <input type="tel" inputmode="numeric" maxlength="1">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="verifyBtn">Verify</button>
+        </form>
+        <p class="auth-switch">
+          Didn't get a code? <a id="resendLink">Resend OTP</a><span id="resendTimer" class="text-muted"></span>
+        </p>
       </div>
-      <h1>Verify your phone</h1>
-      <p class="sub" id="subText">Enter the 6-digit code sent to your phone.</p>
-
-      <form id="otpForm" novalidate>
-        <div class="otp-inputs" id="otpInputs">
-          <input type="tel" inputmode="numeric" maxlength="1">
-          <input type="tel" inputmode="numeric" maxlength="1">
-          <input type="tel" inputmode="numeric" maxlength="1">
-          <input type="tel" inputmode="numeric" maxlength="1">
-          <input type="tel" inputmode="numeric" maxlength="1">
-          <input type="tel" inputmode="numeric" maxlength="1">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="verifyBtn">Verify</button>
-      </form>
-
-      <p class="auth-switch">
-        Didn't get a code?
-        <a id="resendLink">Resend OTP</a>
-        <span id="resendTimer" class="text-muted"></span>
-      </p>
     </div>
   </div>
 
@@ -43,13 +40,11 @@
   <script src="JS/auth.js"></script>
   <script>
     Auth.redirectIfLoggedIn();
-
     const userId = Utils.qparam('user_id');
     const phone = Utils.qparam('phone');
     if (!userId) window.location.href = 'register.html';
     if (phone) document.getElementById('subText').textContent = `Enter the 6-digit code sent to ${phone}.`;
 
-    // OTP box auto-advance
     const inputs = [...document.querySelectorAll('#otpInputs input')];
     inputs.forEach((input, i) => {
       input.addEventListener('input', () => {

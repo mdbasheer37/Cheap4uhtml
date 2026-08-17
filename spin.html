@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="spin"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Spin & Win</div>
+    </div>
 
-  <main class="main-content">
+    <div class="page-content page-content--noheader">
     <div class="wheel-wrap">
       <div class="wheel-container">
         <div class="wheel-pointer">🔻</div>
@@ -29,7 +33,8 @@
 
     <div class="section-header"><h2>Spin History</h2></div>
     <div class="card" id="spinHistory"><div class="skel" style="height:50px;"></div></div>
-  </main>
+  </div>
+  </div>
 
   <div class="modal-backdrop" id="winModal">
     <div class="modal-sheet">
@@ -46,7 +51,6 @@
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/spin.js"></script>
 </body>
 </html>

@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="services"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Fund Wallet</div>
+    </div>
 
-  <main class="main-content" style="max-width:520px;">
+    <div class="page-content page-content--noheader">
     <div class="balance-card" style="margin-bottom:16px;">
       <div class="balance-card__label">Wallet Balance</div>
       <div class="balance-card__amount" id="walletBalance">—</div>
@@ -30,13 +34,13 @@
         <button type="submit" class="btn btn-primary btn-block" id="fundBtn">Fund with Card</button>
       </form>
     </div>
-  </main>
+  </div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/payment.js"></script>
 </body>
 </html>

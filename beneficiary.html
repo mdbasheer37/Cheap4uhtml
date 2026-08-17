@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beneficiaries — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Beneficiaries</div>
+    </div>
+    <div class="page-content page-content--noheader">
+      <p class="small text-muted mb-16">Saved beneficiaries are stored only on this device, for quick access when buying airtime or data.</p>
+      <button class="btn btn-primary btn-block mb-16" id="addBeneficiaryBtn">+ Add Beneficiary</button>
+      <div id="beneficiaryList"><div class="skel" style="height:60px;"></div></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="beneficiaryModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Add Beneficiary</div>
+        <button class="modal-close" onclick="Utils.closeModal('beneficiaryModal')">✕</button>
+      </div>
+      <form id="beneficiaryForm" novalidate>
+        <div class="field">
+          <label for="benName">Name</label>
+          <input class="input" type="text" id="benName" required>
+        </div>
+        <div class="field">
+          <label for="benPhone">Phone number</label>
+          <input class="input" type="tel" id="benPhone" maxlength="11" required>
+        </div>
+        <div class="field">
+          <label for="benNetwork">Network</label>
+          <select class="input" id="benNetwork">
+            <option>MTN</option><option>Airtel</option><option>Glo</option><option>9Mobile</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save Beneficiary</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/api.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/auth.js"></script>
+  <script>
+    // Purely device-local list (matches the real app's current_user['beneficiaries']
+    // in-memory field — there is no backend endpoint for beneficiaries).
+    function storageKey() {
+      const user = Api.getUser();
+      return `c4u_beneficiaries_${(user && user.email) || 'guest'}`;
+    }
+    function getBeneficiaries() {
+      try { return JSON.parse(localStorage.getItem(storageKey()) || '[]'); } catch { return []; }
+    }
+    function saveBeneficiaries(list) {
+      localStorage.setItem(storageKey(), JSON.stringify(list));
+    }
+
+    function renderBeneficiaries() {
+      const list = getBeneficiaries();
+      const box = document.getElementById('beneficiaryList');
+      box.innerHTML = list.length ? `<div class="card">` + list.map((b, i) => `
+        <div class="txn-row">
+          <div class="txn-row__icon">👤</div>
+          <div class="txn-row__body">
+            <div class="txn-row__title" style="text-transform:none;">${Utils.esc(b.name)}</div>
+            <div class="txn-row__meta">${Utils.esc(b.phone)} · ${Utils.esc(b.network)}</div>
+          </div>
+          <button class="btn btn-outline btn-sm" data-remove="${i}">Remove</button>
+        </div>`).join('') + `</div>`
+        : `<div class="card"><div class="empty-state small">No beneficiaries added yet.</div></div>`;
+      box.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const list = getBeneficiaries();
+          list.splice(Number(btn.dataset.remove), 1);
+          saveBeneficiaries(list);
+          renderBeneficiaries();
+        });
+      });
+    }
+
+    document.getElementById('addBeneficiaryBtn').addEventListener('click', () => {
+      document.getElementById('beneficiaryForm').reset();
+      Utils.openModal('beneficiaryModal');
+    });
+
+    document.getElementById('beneficiaryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('benName').value.trim();
+      const phone = document.getElementById('benPhone').value.trim();
+      const network = document.getElementById('benNetwork').value;
+      if (!name || !Utils.isValidPhone(phone)) { Utils.toast('Enter a valid name and 11-digit phone number', 'error'); return; }
+      const list = getBeneficiaries();
+      list.push({ name, phone, network });
+      saveBeneficiaries(list);
+      Utils.closeModal('beneficiaryModal');
+      renderBeneficiaries();
+    });
+
+    Auth.requireAuth();
+    renderBeneficiaries();
+  </script>
+</body>
+</html>

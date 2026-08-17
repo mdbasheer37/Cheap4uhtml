@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="cashback"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Cashback</div>
+    </div>
 
-  <main class="main-content">
+    <div class="page-content page-content--noheader">
     <div class="gradient-card gradient-card--green mb-16">
       <div class="balance-card__label">Cashback Balance</div>
       <div class="balance-card__amount" id="cbBalance">—</div>
@@ -28,13 +32,13 @@
 
     <div class="section-header"><h2>Cashback History</h2></div>
     <div class="card" id="historyList"><div class="skel" style="height:50px;"></div></div>
-  </main>
+  </div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/cashback.js"></script>
 </body>
 </html>

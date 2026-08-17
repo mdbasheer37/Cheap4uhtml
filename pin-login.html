@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unlock — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap pin-unlock-page">
+    <div class="blob-header"></div>
+    <p class="pin-unlock-greeting" id="greeting">Welcome back!</p>
+
+    <div class="pin-unlock-card">
+      <div class="pin-unlock-field">
+        <span class="ic">🛡️</span>
+        <input type="password" id="pinInput" inputmode="numeric" maxlength="6" placeholder="Enter your PIN">
+      </div>
+      <button class="btn btn-primary btn-block" id="unlockBtn">UNLOCK</button>
+      <p class="pin-unlock-switch"><a id="useFullLogin">Not you? Use email &amp; password</a></p>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/api.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/auth.js"></script>
+  <script>
+    const quickPinData = QuickPin.get();
+    if (!quickPinData) {
+      window.location.replace('login.html');
+    } else {
+      const name = quickPinData.user && quickPinData.user.name ? quickPinData.user.name : quickPinData.email;
+      document.getElementById('greeting').textContent = `Welcome back, ${name}!`;
+    }
+
+    document.getElementById('pinInput').focus();
+
+    async function attemptUnlock() {
+      const pin = document.getElementById('pinInput').value.trim();
+      if (!pin) return;
+      const btn = document.getElementById('unlockBtn');
+      Utils.setButtonLoading(btn, true, 'Unlocking…');
+      const data = await QuickPin.verify(pin);
+      Utils.setButtonLoading(btn, false);
+      if (data) {
+        Api.setSession(data.session_token, data.user);
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('pinInput').value = '';
+        Utils.toast('Incorrect PIN', 'error');
+      }
+    }
+
+    document.getElementById('unlockBtn').addEventListener('click', attemptUnlock);
+    document.getElementById('pinInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') attemptUnlock();
+    });
+
+    document.getElementById('useFullLogin').addEventListener('click', () => {
+      window.location.href = 'login.html?full=1';
+    });
+  </script>
+</body>
+</html>

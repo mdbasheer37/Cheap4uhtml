@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="services"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Cable TV Subscription</div>
+    </div>
 
-  <main class="main-content" style="max-width:520px;">
+    <div class="page-content page-content--noheader">
     <div class="card" id="formCard">
       <div class="card-title">Cable TV Subscription</div>
       <label class="small" style="font-weight:700;">Select Provider</label>
@@ -36,13 +40,13 @@
     </div>
 
     <div class="card hidden" id="resultCard"></div>
-  </main>
+  </div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/purchase.js"></script>
   <script src="JS/cable.js"></script>
 </body>

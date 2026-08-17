@@ -8,36 +8,46 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div class="auth-page">
-    <div class="auth-card">
-      <div class="auth-card__logo">
-        <img src="assets/logo.png" alt="Cheap4U" onerror="this.style.display='none'">
-        <b>CHEAP4U TECHNOLOGY</b>
-      </div>
-      <h1>Welcome back</h1>
-      <p class="sub">Log in to manage your wallet and services.</p>
+  <div class="app-wrap auth-page">
+    <div class="blob-header blob-header--dark">
+      <h1>Welcome Back!</h1>
+    </div>
 
-      <form id="loginForm" novalidate>
-        <div class="field" id="f-email">
-          <label for="email">Email address</label>
-          <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
-          <div class="field-error">Please enter a valid email address.</div>
-        </div>
-        <div class="field" id="f-password">
-          <label for="password">Password</label>
-          <div class="input-group">
-            <input class="input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
-            <button type="button" class="input-group__icon" id="togglePw">👁️</button>
+    <div class="auth-card-wrap">
+      <div class="auth-card">
+        <form id="loginForm" novalidate>
+          <div class="auth-field" id="f-email">
+            <span class="ic">✉</span>
+            <input type="email" id="email" placeholder="Email Address" autocomplete="email" required>
           </div>
-          <div class="field-error">Please enter your password.</div>
-        </div>
-        <div style="text-align:right;margin-bottom:18px;">
-          <a href="forgot-password.html" class="small" style="color:var(--blue-600);font-weight:700;">Forgot password?</a>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Log In</button>
-      </form>
+          <div class="auth-field" id="f-password">
+            <span class="ic">🔑</span>
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password" required>
+            <button type="button" class="input-group__icon" id="togglePw" style="position:static;margin-left:4px;">👁️</button>
+          </div>
+          <div class="auth-forgot"><a href="forgot-password.html">Forgot Password?</a></div>
+          <button type="submit" class="btn btn-primary btn-block" id="loginBtn">SIGN IN</button>
+        </form>
+      </div>
 
-      <p class="auth-switch">Don't have an account? <a href="register.html">Create one</a></p>
+      <p class="auth-switch">New to our app?</p>
+      <div class="auth-switch-arrow">↓</div>
+      <p class="auth-switch" style="margin-top:0;"><a href="register.html">Create Account</a></p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="quickPinModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Set Up Quick Unlock</div>
+      </div>
+      <p class="small text-muted mb-16">Save a PIN on this device so you can unlock the app quickly next time, without typing your password.</p>
+      <div class="field">
+        <label for="quickPinInput">Choose a 4–6 digit PIN</label>
+        <input class="input" type="password" id="quickPinInput" inputmode="numeric" maxlength="6" placeholder="••••">
+      </div>
+      <button class="btn btn-primary btn-block" id="quickPinSaveBtn">Save & Continue</button>
+      <button class="btn btn-ghost btn-block mt-8" id="quickPinSkipBtn">Skip for now</button>
     </div>
   </div>
 
@@ -46,12 +56,21 @@
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
   <script>
+    // If a quick-PIN is already saved on this device, that's the real
+    // entry screen — full login is reached only via "Not you?" (which
+    // passes ?full=1 so we don't bounce straight back to pin-login.html).
+    const wantsFullLogin = Utils.qparam('full') === '1';
+    if (QuickPin.get() && !Api.isLoggedIn() && !wantsFullLogin) {
+      window.location.replace('pin-login.html');
+    }
     Auth.redirectIfLoggedIn();
 
     document.getElementById('togglePw').addEventListener('click', () => {
       const pw = document.getElementById('password');
       pw.type = pw.type === 'password' ? 'text' : 'password';
     });
+
+    let pendingLogin = null; // { email, sessionToken, user }
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -63,12 +82,19 @@
       if (!Utils.isValidEmail(email) || !password) return;
 
       const btn = document.getElementById('loginBtn');
-      Utils.setButtonLoading(btn, true, 'Logging in…');
+      Utils.setButtonLoading(btn, true, 'Signing in…');
       try {
         const res = await Api.auth.login({ email, password });
         Api.setSession(res.data.session_token, res.data.user);
         Utils.toast('Login successful', 'success');
-        window.location.href = 'dashboard.html';
+
+        const existing = QuickPin.get();
+        if (!existing || existing.email !== email.toLowerCase()) {
+          pendingLogin = { email, sessionToken: res.data.session_token, user: res.data.user };
+          Utils.openModal('quickPinModal');
+        } else {
+          window.location.href = 'dashboard.html';
+        }
       } catch (err) {
         if (err.payload && err.payload.requires_verification) {
           Utils.toast(err.message, 'warning');
@@ -79,6 +105,19 @@
       } finally {
         Utils.setButtonLoading(btn, false);
       }
+    });
+
+    document.getElementById('quickPinSaveBtn').addEventListener('click', async () => {
+      const pin = document.getElementById('quickPinInput').value.trim();
+      if (!Utils.isValidPin(pin)) { Utils.toast('Enter a 4–6 digit PIN', 'error'); return; }
+      if (pendingLogin) {
+        await QuickPin.save(pendingLogin.email, pin, pendingLogin.sessionToken, pendingLogin.user);
+      }
+      window.location.href = 'dashboard.html';
+    });
+
+    document.getElementById('quickPinSkipBtn').addEventListener('click', () => {
+      window.location.href = 'dashboard.html';
     });
   </script>
 </body>

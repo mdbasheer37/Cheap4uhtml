@@ -8,9 +8,13 @@
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-  <div id="appShell" class="app-shell" data-page="referral"></div>
+  <div class="app-wrap">
+    <div class="simple-topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div class="simple-topbar__title">Referral Program</div>
+    </div>
 
-  <main class="main-content">
+    <div class="page-content page-content--noheader">
     <div class="gradient-card gradient-card--purple mb-16">
       <div class="balance-card__label">Referral Balance</div>
       <div class="balance-card__amount" id="referralBalance">—</div>
@@ -42,13 +46,13 @@
 
     <div class="section-header"><h2>Bonus History</h2></div>
     <div class="card" id="referralHistoryList"><div class="skel" style="height:50px;"></div></div>
-  </main>
+  </div>
+  </div>
 
   <script src="JS/config.js"></script>
   <script src="JS/api.js"></script>
   <script src="JS/utils.js"></script>
   <script src="JS/auth.js"></script>
-  <script src="JS/app.js"></script>
   <script src="JS/referral.js"></script>
 </body>
 </html>

@@ -1,108 +1,115 @@
-# Cheap4U Technology — Frontend
+# Cheap4U Technology — Frontend (v2)
 
 A complete HTML5 / CSS3 / Vanilla JavaScript frontend for the existing
-Cheap4U Flask backend. No frameworks, no build step — open `index.html`
-or deploy the folder as-is to any static host.
+Cheap4U Flask backend, rebuilt to match the real production app's visual
+design and full feature set. No frameworks, no build step.
 
 ## Quick start
 
 Just open `index.html` in a browser, or serve the folder with any static
-file server (e.g. `python3 -m http.server`). No build/install step.
+file server. No build/install step.
 
 ## Deploying on Render (or any static host)
 
-- **Publish directory:** `.` (repo root — `index.html` lives at the top level, not in a `frontend` subfolder)
-- **Build command:** leave empty (pure static site, no build step)
+- **Publish directory:** `.` (repo root)
+- **Build command:** leave empty (pure static site)
 
 Folder names are `CSS/` and `JS/` (capitalized) — every HTML file
-references them with matching capitalization. Linux hosts (Render,
-GitHub Pages, etc.) are case-sensitive, so if you ever rename these
-folders, update every `href="CSS/…"` / `src="JS/…"` reference to match,
-or the assets will 404 even though everything looks fine locally on
-Windows/Mac.
+references them with matching capitalization. Linux hosts are
+case-sensitive, so keep any renames consistent across both the folders
+and every `href`/`src` reference.
 
 ## Changing the backend URL
 
-Edit **one line**, in `js/config.js`:
-
+Edit **one line**, in `JS/config.js`:
 ```js
 API_BASE_URL: 'https://cheap4u-backend.onrender.com',
 ```
 
-Every API call in the app goes through `js/api.js`, which reads this
-value — nothing else needs to change to point at a local/dev backend.
+## What changed in v2
+
+The first version was built from an incomplete audit (only the file
+listing, not the actual app source) and used a sidebar-dashboard design
+that didn't match the real app at all. This version was rebuilt after
+reading the real ~25,000-line Kivy app source directly, and now matches
+it in both design and feature completeness:
+
+**Design** — Material Blue (#2196F3) theme, rounded "blob" header panels
+on auth screens, icon-grid Quick Actions/Services on the dashboard, and
+the real 4-tab bottom nav (Home / History / Support / Profile) instead of
+a sidebar.
+
+**Quick PIN unlock** — replicates the real app's device-local convenience
+feature exactly: after a full email/password login, the app can save a
+PIN (SHA-256 hashed client-side against the email, stored with the
+session token in local storage — never sent to the backend). Return
+visits show a "Welcome back, {name}!" unlock screen instead of the full
+login form. Pure device convenience, no backend endpoint involved,
+matching `Cheap4u.py`'s `attempt_pin_login()`.
+
+**Five feature areas that were missing in v1, now fully wired to real
+backend routes:**
+- Dollar Card (`card.html` / `/api/cards/*`)
+- Merchant program incl. bulk purchases (`merchant.html` / `/api/merchant/*`)
+- Bill Reminders (`reminders.html` / `/api/reminders/*`)
+- Price Comparison (`compare.html` / `/api/compare/*`)
+- Rewards / Gamification — XP, levels, missions, badges (`rewards.html` /
+  `/api/gamification/*`)
+
+**Static info pages, matching the real app's own dialogs (none of these
+call the backend — confirmed from source that the real app doesn't
+either):** `pricing.html`, `upgrade.html`, `code4balance.html` (real USSD
+balance-check codes).
+
+**`beneficiary.html`** — replicates the real app's local-only beneficiary
+list (`current_user['beneficiaries']` in the Kivy app has no backend
+field) using `localStorage`, keyed per logged-in email.
+
+**Confirmed "Coming Soon" in the real app itself** (not a gap in this
+build — verified from `Cheap4u.py`'s own `show_coming_soon()` calls):
+Transfer to Banks, Transfer to Cheap4U, Smile Voice, Bulk SMS, Betting,
+Gift Cards. These show the same "service coming soon" toast the real app
+shows, rather than a fake integration.
 
 ## Structure
 
 ```
-index.html            → redirects to dashboard or login based on stored session
+index.html              → routes to pin-login / dashboard / login based on stored state
 login.html / register.html / verify-otp.html / forgot-password.html / reset-password.html
-dashboard.html         → wallet balance, referral/cashback stats, recent transactions
-services.html          → hub linking every service
+pin-login.html           → device Quick-PIN unlock screen
+dashboard.html            → Home tab: wallet, Monthly Challenge, Quick Actions, Services
+transactions.html          → History tab
+support.html                → Support tab (menu) — ai-chat.html is the actual chat
+profile.html                  → Profile tab (list-menu)
+
 airtime.html / data.html / electricity.html / cable.html / exampin.html
-wallet.html             → card funding (Paystack) + virtual account
-transactions.html       → transaction history, filters
-referral.html / cashback.html / challenge.html / spin.html / coupons.html
-airtime-to-cash.html    → 4-step OTP → verify → quota → transfer wizard
-support.html            → AI support chat
-profile.html            → account details, transaction PIN, legal links, logout
+wallet.html · airtime-to-cash.html · referral.html · cashback.html
+challenge.html · spin.html · coupons.html
+card.html · card-history.html · merchant.html · reminders.html · compare.html · rewards.html
+pricing.html · upgrade.html · code4balance.html · beneficiary.html
 
-css/style.css           → single design-system stylesheet (mobile-first)
+CSS/style.css             → single design-system stylesheet (Material Blue, mobile-first)
 
-js/config.js            → API_BASE_URL + shared constants (edit this to redeploy)
-js/api.js               → centralized fetch client; every backend route used, matched
-                           1:1 against the actual Flask source (auth.py, routes.py,
-                           plans.py, payment.py, referral.py, cashback_routes.py,
-                           challenge_routes.py, coupon_routes.py, spin_routes.py,
-                           ai_chat.py). No invented endpoints.
-js/utils.js              → toasts, formatting, validation, clipboard, button states
-js/auth.js               → login/session guards
-js/app.js                → shared sidebar/topbar/bottom-nav shell
-js/purchase.js            → shared PIN-confirmation modal + result rendering
-js/<page>.js              → one file per page, each doing only that page's logic
+JS/config.js               → API_BASE_URL + shared constants
+JS/api.js                    → centralized fetch client; every route matched 1:1 against
+                              the actual Flask source, including the 5 newly-added blueprints
+JS/nav-grids.js               → shared Quick Actions / Services tile definitions
+JS/utils.js · JS/auth.js · JS/app.js · JS/purchase.js  → shared helpers
+JS/<page>.js                    → one file per page
 
-assets/                  → logos/icons reused from the original Kivy app + backend
+assets/                          → logos/icons reused from the original app + backend
 ```
 
-## Design
+## Known backend issue (documented only, not modified)
 
-White / blue / light-gray fintech look: rounded cards, generous spacing,
-sidebar navigation on desktop, bottom tab bar on mobile. Every number
-shown (wallet balance, plan prices, transaction history, leaderboard,
-etc.) comes from a live API response — nothing is hardcoded.
-
-## Known backend issue (not modified — documented only)
-
-**Electricity provider IDs don't match between two backend files.**
-`init_plans.py` seeds `ElectricityProvider` rows with names like
-`"Eko Electric (EKEDC)"` and its own `provider_id` numbering (1 =
-Abuja, 2 = Eko, 3 = Ibadan…), while `cheapdatahub.py`'s `DISCO_ID_MAP`
-(used to validate a purchase) expects different name strings (`"Eko
-Electric"`, no parenthetical) with a *different* number assigned to
-each disco (1 = Ikeja, 2 = Eko, 5 = Abuja…). The frontend calls
-`GET /api/plans/electricity-providers` and sends back exactly the
-`name` field the backend gave it — so on the current backend data this
-will trip `buy_electricity()`'s "Unknown electricity provider" error
-for names that don't happen to collide with a DISCO_ID_MAP key. This
-is a backend data-seeding mismatch between two independently
-maintained lists; per your instructions, backend code was not touched
-— see the comment block at the top of `js/electricity.js`.
+Electricity provider names seeded in `init_plans.py` don't match the
+`DISCO_ID_MAP` keys used to validate purchases in `cheapdatahub.py` — see
+the comment block at the top of `JS/electricity.js`.
 
 ## Things that could only be verified against a live deployment
 
-Static code audit, endpoint-matching against the Flask source, HTML
-validation, and JS syntax checks were all done and passed. The
-following can only be confirmed once wired to a running backend/DB:
-
-- Whether `PAYSTACK_SECRET_KEY`, `GEMINI_API_KEY`, `VTUNAIJA_API_KEY`,
-  and `CHEAPDATAHUB_API_KEY` are actually configured in the deployed
-  environment (their absence produces backend-side error responses
-  that the frontend surfaces via the toast/error UI, but can't be
-  triggered without a live call).
-- Real Paystack checkout completion (the "fund wallet" flow opens the
-  real Paystack authorization URL — full completion needs a live test
-  card/account).
-- CORS behavior against the actual deployed backend origin.
-- The electricity provider mismatch above, which needs a live
-  `/api/plans/electricity-providers` response to confirm which (if
-  any) seeded names happen to match `DISCO_ID_MAP`.
+- Whether all provider API keys (Paystack, VTUNaija, CheapDataHub, Gemini)
+  are configured in the deployed environment
+- Real Paystack checkout completion
+- Live CORS behavior against the deployed backend origin
+- The electricity provider name mismatch above
