@@ -29,9 +29,9 @@ async function loadDashboard() {
       accCard.innerHTML = `
         <div class="account-number-card__label">Your account number</div>
         <div class="account-number-row">
-          <span class="ic">🏦</span>
+          <span class="ic"><span class="material-symbols-outlined">account_balance</span></span>
           <span>${Utils.esc(d.bank_name)} — ${Utils.esc(d.account_number)}</span>
-          <button data-copy="${Utils.esc(d.account_number)}">📋</button>
+          <button data-copy="${Utils.esc(d.account_number)}"><span class="material-symbols-outlined">content_copy</span></button>
         </div>`;
       accCard.querySelector('[data-copy]').addEventListener('click', (e) => {
         Utils.copyToClipboard(e.currentTarget.dataset.copy, 'Account number copied');
@@ -82,7 +82,7 @@ document.getElementById('notifBell').addEventListener('click', async () => {
   const rows = window._notifRows || [];
   list.innerHTML = rows.length ? rows.map(n => `
     <div class="txn-row">
-      <div class="txn-row__icon">${n.is_read ? '📭' : '📬'}</div>
+      <div class="txn-row__icon">${n.is_read ? '<span class="material-symbols-outlined">mail</span>' : '<span class="material-symbols-outlined">mark_email_unread</span>'}</div>
       <div class="txn-row__body">
         <div class="txn-row__title" style="text-transform:none;">${Utils.esc(n.title || n.message || 'Notification')}</div>
         <div class="txn-row__meta">${Utils.dateFmt(n.created_at)}</div>

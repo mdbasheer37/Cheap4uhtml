@@ -81,7 +81,7 @@ async function loadHistory() {
     const box = document.getElementById('spinHistory');
     box.innerHTML = rows.length ? rows.map(r => `
       <div class="txn-row">
-        <div class="txn-row__icon">🎡</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">casino</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(r.label)}</div>
           <div class="txn-row__meta">${Utils.dateFmt(r.created_at)} · ${r.is_free_spin ? 'Free spin' : 'Paid spin'}</div>
@@ -116,7 +116,7 @@ async function doSpin() {
     const d = res.data;
     await spinToSegment(d.segment_id);
 
-    document.getElementById('winTitle').textContent = d.reward_value > 0 ? 'You won! 🎉' : 'Better luck next time!';
+    document.getElementById('winTitle').textContent = d.reward_value > 0 ? 'You won! <span class="material-symbols-outlined">celebration</span>' : 'Better luck next time!';
     let msg = d.label;
     if (d.coupon_code) msg += ` — Coupon code: ${d.coupon_code}`;
     if (d.reward_value > 0 && !d.coupon_code) msg += ` (${Utils.money(d.reward_value)} credited)`;

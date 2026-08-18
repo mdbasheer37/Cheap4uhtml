@@ -48,7 +48,7 @@ async function loadChallenge() {
     const box = document.getElementById('winnersList');
     box.innerHTML = rows.length ? rows.map(w => `
       <div class="txn-row">
-        <div class="txn-row__icon">🏆</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">emoji_events</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(w.user_name || w.name || 'Winner')} — ${Utils.esc(w.month || '')}</div>
           <div class="txn-row__meta">${Utils.esc(w.rank_label || w.reward_position || '')}</div>
@@ -72,7 +72,7 @@ document.getElementById('notifBell')?.addEventListener('click', async () => {
   const rows = window._notifRows || [];
   list.innerHTML = rows.length ? rows.map(n => `
     <div class="txn-row">
-      <div class="txn-row__icon">${n.is_read ? '📭' : '📬'}</div>
+      <div class="txn-row__icon">${n.is_read ? '<span class="material-symbols-outlined">mail</span>' : '<span class="material-symbols-outlined">mark_email_unread</span>'}</div>
       <div class="txn-row__body">
         <div class="txn-row__title" style="text-transform:none;">${Utils.esc(n.title || n.message || 'Notification')}</div>
         <div class="txn-row__meta">${Utils.dateFmt(n.created_at)}</div>

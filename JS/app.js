@@ -10,10 +10,10 @@
  */
 
 const NAV_ITEMS = [
-  { key: 'dashboard',    label: 'Home',    href: 'dashboard.html',    icon: '🏠' },
-  { key: 'transactions', label: 'History', href: 'transactions.html', icon: '🕘' },
-  { key: 'support',      label: 'Support', href: 'support.html',      icon: '🎧' },
-  { key: 'profile',      label: 'Profile', href: 'profile.html',      icon: '👤' },
+  { key: 'dashboard',    label: 'Home',    href: 'dashboard.html',    icon: '<span class="material-symbols-outlined">home</span>' },
+  { key: 'transactions', label: 'History', href: 'transactions.html', icon: '<span class="material-symbols-outlined">history</span>' },
+  { key: 'support',      label: 'Support', href: 'support.html',      icon: '<span class="material-symbols-outlined">support_agent</span>' },
+  { key: 'profile',      label: 'Profile', href: 'profile.html',      icon: '<span class="material-symbols-outlined">person</span>' },
 ];
 
 const Layout = (() => {

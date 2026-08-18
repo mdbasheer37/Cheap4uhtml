@@ -1,5 +1,5 @@
 /**
- * airtime.js — Buy Airtime page. Uses Api.vtu.airtime → POST /api/vtpass/airtime.
+ * airtime.js — Buy Airtime page. Uses Api.vtu.airtime <span class="material-symbols-outlined">arrow_forward</span> POST /api/vtpass/airtime.
  * Body: { network, phone, amount, pin, coupon_code }
  */
 

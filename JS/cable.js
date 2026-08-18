@@ -33,7 +33,7 @@ function renderProviderGrid() {
   grid.innerHTML = providers.map(p => {
     const logo = logoFor(p);
     return `<div class="provider-item" data-provider="${Utils.esc(p)}">
-      ${logo ? `<img src="${logo}" alt="${Utils.esc(p)}" onerror="this.style.display='none'">` : `<div style="font-size:20px;">📺</div>`}
+      ${logo ? `<img src="${logo}" alt="${Utils.esc(p)}" onerror="this.style.display='none'">` : `<div style="font-size:20px;"><span class="material-symbols-outlined">tv</span></div>`}
       <span>${Utils.esc(p)}</span>
     </div>`;
   }).join('');

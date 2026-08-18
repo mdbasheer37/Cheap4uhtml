@@ -41,7 +41,7 @@ async function loadCashback() {
     const box = document.getElementById('historyList');
     box.innerHTML = rows.length ? rows.map(e => `
       <div class="txn-row">
-        <div class="txn-row__icon">💰</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">savings</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title">${Utils.esc((e.category || e.type || '').replace(/_/g,' '))}</div>
           <div class="txn-row__meta">${Utils.dateFmt(e.created_at)}${e.note ? ' · ' + Utils.esc(e.note) : ''}</div>

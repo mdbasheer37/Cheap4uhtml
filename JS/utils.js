@@ -20,7 +20,7 @@ const Utils = (() => {
     const container = ensureToastContainer();
     const el = document.createElement('div');
     el.className = `toast toast--${type}`;
-    const icon = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' }[type] || 'ℹ';
+    const icon = { success: '<span class="material-symbols-outlined">check</span>', error: '<span class="material-symbols-outlined">close</span>', info: 'ℹ', warning: '<span class="material-symbols-outlined">warning</span>' }[type] || 'ℹ';
     el.innerHTML = `<span class="toast__icon">${icon}</span><span class="toast__msg"></span>`;
     el.querySelector('.toast__msg').textContent = message;
     container.appendChild(el);
@@ -142,7 +142,7 @@ const Utils = (() => {
   };
 })();
 
-// Apply the device-local dark theme preference (set via Profile → Themes)
+// Apply the device-local dark theme preference (set via Profile <span class="material-symbols-outlined">arrow_forward</span> Themes)
 // on every page load — matches the real app's persisted theme choice.
 (function applyStoredTheme() {
   try {

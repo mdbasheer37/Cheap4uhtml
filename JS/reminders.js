@@ -2,12 +2,12 @@
  * reminders.js — Bill Reminders via /api/reminders/* (reminder_routes.py).
  */
 
-const BILL_ICONS = { dstv: '📺', gotv: '📺', startimes: '📺', electricity: '⚡', internet: '🌐' };
+const BILL_ICONS = { dstv: '<span class="material-symbols-outlined">tv</span>', gotv: '<span class="material-symbols-outlined">tv</span>', startimes: '<span class="material-symbols-outlined">tv</span>', electricity: '<span class="material-symbols-outlined">bolt</span>', internet: '<span class="material-symbols-outlined">language</span>' };
 
 function reminderRow(r) {
   return `
     <div class="txn-row">
-      <div class="txn-row__icon">${BILL_ICONS[r.bill_type] || '🔔'}</div>
+      <div class="txn-row__icon">${BILL_ICONS[r.bill_type] || '<span class="material-symbols-outlined">notifications</span>'}</div>
       <div class="txn-row__body">
         <div class="txn-row__title">${Utils.esc(r.nickname || r.bill_type)}</div>
         <div class="txn-row__meta">${Utils.esc(r.account_identifier)} · Due day ${r.due_day_of_month} · Next: ${Utils.esc(r.next_due_date)}</div>

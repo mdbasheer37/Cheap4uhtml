@@ -36,7 +36,7 @@ function parseBulkLines(jobType, text) {
 async function renderApplyForm(box) {
   box.innerHTML = `
     <div class="empty-state">
-      <div class="empty-state__icon">🏪</div>
+      <div class="empty-state__icon"><span class="material-symbols-outlined">storefront</span></div>
       <div class="empty-state__title">Become a Merchant</div>
       <p>Apply for a merchant account to unlock bulk purchases and profit analytics.</p>
     </div>
@@ -92,7 +92,7 @@ function renderPendingOrRejected(box, profile) {
     suspended: 'Your merchant account has been suspended.',
   }[profile.status] || '';
   box.innerHTML = `<div class="card"><div class="empty-state">
-    <div class="empty-state__icon">🏪</div>
+    <div class="empty-state__icon"><span class="material-symbols-outlined">storefront</span></div>
     <div class="empty-state__title">${Utils.esc(profile.business_name)}</div>
     <p>${Utils.esc(statusMsg)}</p>
   </div></div>`;
@@ -176,7 +176,7 @@ async function loadBulkJobs() {
     const rows = res.data.jobs || res.data || [];
     box.innerHTML = rows.length ? `<div class="card">` + rows.map(j => `
       <div class="txn-row">
-        <div class="txn-row__icon">📦</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">inventory_2</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title">${Utils.esc(j.job_type)}</div>
           <div class="txn-row__meta">${j.success_count}/${j.total_items} succeeded · ${Utils.dateFmt(j.created_at)}</div>

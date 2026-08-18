@@ -2,7 +2,7 @@
  * airtime-to-cash.js — 4-step wizard exactly matching the backend's real
  * flow (routes.py a2c_bp + airtime_to_cash.py):
  *   1. generate-otp { network, phone }
- *   2. verify-otp { network, phone, otp } → session_id, airtime_balance
+ *   2. verify-otp { network, phone, otp } <span class="material-symbols-outlined">arrow_forward</span> session_id, airtime_balance
  *   3. check-quota { network, amount }
  *   4. transfer { network, phone, amount, sim_pin, session_id }
  * Note: step 4 uses the user's carrier SIM transfer PIN, NOT the Cheap4U
@@ -139,7 +139,7 @@ async function loadA2cHistory() {
     const rows = res.data || [];
     box.innerHTML = rows.length ? rows.map(t => `
       <div class="txn-row">
-        <div class="txn-row__icon">🔄</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">currency_exchange</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title">Airtime to Cash</div>
           <div class="txn-row__meta">${Utils.esc(t.reference || '')} · ${Utils.dateFmt(t.created_at)}</div>

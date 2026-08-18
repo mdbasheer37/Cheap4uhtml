@@ -12,7 +12,7 @@ function cardTile(card) {
     <div class="dollar-card ${frozen ? 'frozen' : ''}" data-card-id="${card.id}">
       <div class="dollar-card__brand">
         <span>${Utils.esc(card.card_brand || 'Visa')}</span>
-        <span>${frozen ? '🧊 FROZEN' : card.status === 'terminated' ? 'TERMINATED' : ''}</span>
+        <span>${frozen ? '<span class="material-symbols-outlined">ac_unit</span> FROZEN' : card.status === 'terminated' ? 'TERMINATED' : ''}</span>
       </div>
       <div class="dollar-card__number">${Utils.esc(card.card_number_masked || '•••• •••• •••• ••••')}</div>
       <div class="dollar-card__footer">
@@ -43,14 +43,14 @@ async function loadCards() {
     cardConfig = configRes.data;
 
     if (!cardConfig.is_enabled) {
-      box.innerHTML = `<div class="empty-state"><div class="empty-state__icon">💳</div><div class="empty-state__title">Dollar Card is currently unavailable</div><p>Please check back later.</p></div>`;
+      box.innerHTML = `<div class="empty-state"><div class="empty-state__icon"><span class="material-symbols-outlined">credit_card</span></div><div class="empty-state__title">Dollar Card is currently unavailable</div><p>Please check back later.</p></div>`;
       return;
     }
 
     const cards = listRes.data || [];
     let html = '';
     if (!cards.length) {
-      html += `<div class="empty-state"><div class="empty-state__icon">💳</div><div class="empty-state__title">No dollar cards yet</div><p>Create one to start spending in USD online.</p></div>`;
+      html += `<div class="empty-state"><div class="empty-state__icon"><span class="material-symbols-outlined">credit_card</span></div><div class="empty-state__title">No dollar cards yet</div><p>Create one to start spending in USD online.</p></div>`;
     } else {
       html += cards.map(cardTile).join('');
     }

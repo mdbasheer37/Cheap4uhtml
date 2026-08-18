@@ -34,7 +34,7 @@ window.saveLocalSettings = function () {
 };
 
 document.getElementById('securityItem')?.addEventListener('click', () => {
-  alert('Security Options:\n\n• Set Transaction PIN — Profile → Set Transaction PIN\n• Change Password — Login screen → Forgot Password\n• Always logout after use\n• Never share your PIN or password');
+  alert('Security Options:\n\n• Set Transaction PIN — Profile <span class="material-symbols-outlined">arrow_forward</span> Set Transaction PIN\n• Change Password — Login screen <span class="material-symbols-outlined">arrow_forward</span> Forgot Password\n• Always logout after use\n• Never share your PIN or password');
 });
 
 document.getElementById('legalItem')?.addEventListener('click', () => {

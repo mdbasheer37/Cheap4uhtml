@@ -37,7 +37,7 @@ async function loadCoupons() {
     const box = document.getElementById('myCoupons');
     box.innerHTML = rows.length ? rows.map(c => `
       <div class="txn-row">
-        <div class="txn-row__icon">🎟️</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">confirmation_number</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(c.code)}</div>
           <div class="txn-row__meta">${c.discount_type === 'percentage' ? c.discount_value + '% off' : Utils.money(c.discount_value) + ' off'}${c.expires_at ? ' · expires ' + Utils.dateFmt(c.expires_at) : ''}</div>
@@ -55,7 +55,7 @@ async function loadCoupons() {
     const box = document.getElementById('spinCoupons');
     box.innerHTML = rows.length ? rows.map(c => `
       <div class="txn-row">
-        <div class="txn-row__icon">🎡</div>
+        <div class="txn-row__icon"><span class="material-symbols-outlined">casino</span></div>
         <div class="txn-row__body">
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(c.code)}</div>
           <div class="txn-row__meta">${Utils.money(c.discount_amount)} off${c.is_used ? ' · used' : ''}${c.expires_at ? ' · expires ' + Utils.dateFmt(c.expires_at) : ''}</div>

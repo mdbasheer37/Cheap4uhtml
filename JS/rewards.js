@@ -47,7 +47,7 @@ async function loadRewards() {
             <b style="color:var(--gray-900);">${Utils.esc(m.title)}</b><br>
             <span class="small">${Utils.esc(m.description || '')} · ${Utils.esc(m.period)}</span>
           </span>
-          <span>${m.is_completed ? '✅' : `${m.progress_value}/${m.target_value}`}</span>
+          <span>${m.is_completed ? '<span class="material-symbols-outlined">check_circle</span>' : `${m.progress_value}/${m.target_value}`}</span>
         </div>`).join('') + `</div>`;
     } else {
       html += `<div class="card mb-16"><div class="empty-state small">No active missions right now.</div></div>`;
@@ -57,7 +57,7 @@ async function loadRewards() {
     if (badgesRes.status === 'fulfilled' && badgesRes.value.data.length) {
       html += `<div class="grid-4" style="padding:0;margin-bottom:16px;">` + badgesRes.value.data.map(b => `
         <div class="grid-tile grid-tile--service" title="${Utils.esc(b.description || '')}">
-          <span class="ic">${Utils.esc(b.icon || '🏅')}</span>
+          <span class="ic">${Utils.esc(b.icon || '<span class="material-symbols-outlined">military_tech</span>')}</span>
           <span>${Utils.esc(b.name)}</span>
         </div>`).join('') + `</div>`;
     } else {

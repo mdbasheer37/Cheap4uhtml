@@ -38,7 +38,7 @@ async function loadReferral() {
     usersBox.innerHTML = users.length
       ? users.map(u => `
         <div class="txn-row">
-          <div class="txn-row__icon">👤</div>
+          <div class="txn-row__icon"><span class="material-symbols-outlined">person</span></div>
           <div class="txn-row__body">
             <div class="txn-row__title" style="text-transform:none;">${Utils.esc(u.name)}</div>
             <div class="txn-row__meta">Joined ${Utils.esc(u.joined_date)} · ${u.wallet_funded ? 'Funded wallet' : 'Not funded yet'}</div>
@@ -56,7 +56,7 @@ async function loadReferral() {
     historyBox.innerHTML = rows.length
       ? rows.map(t => `
         <div class="txn-row">
-          <div class="txn-row__icon">🤝</div>
+          <div class="txn-row__icon"><span class="material-symbols-outlined">handshake</span></div>
           <div class="txn-row__body">
             <div class="txn-row__title" style="text-transform:none;">${Utils.esc(t.type.replace(/_/g,' '))} — ${Utils.esc(t.referred_user_name)}</div>
             <div class="txn-row__meta">${Utils.esc(t.created_at)}</div>

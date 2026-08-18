@@ -17,13 +17,13 @@ let currentLimit = 20;
 let allLoaded = [];
 
 const SERVICE_ICONS = {
-  airtime: '📱', data: '📶', electricity: '⚡', cable_tv: '📺', exam_pin: '🎓',
-  wallet_funding: '💳', card_payment: '💳', bank_transfer: '🏦', referral_bonus: '🤝',
-  airtime_to_cash: '🔄',
+  airtime: '<span class="material-symbols-outlined">smartphone</span>', data: '<span class="material-symbols-outlined">wifi</span>', electricity: '<span class="material-symbols-outlined">bolt</span>', cable_tv: '<span class="material-symbols-outlined">tv</span>', exam_pin: '<span class="material-symbols-outlined">school</span>',
+  wallet_funding: '<span class="material-symbols-outlined">credit_card</span>', card_payment: '<span class="material-symbols-outlined">credit_card</span>', bank_transfer: '<span class="material-symbols-outlined">account_balance</span>', referral_bonus: '<span class="material-symbols-outlined">handshake</span>',
+  airtime_to_cash: '<span class="material-symbols-outlined">currency_exchange</span>',
 };
 
 function renderTxnRow(t) {
-  const icon = SERVICE_ICONS[t.service_type] || SERVICE_ICONS[t.type] || '💸';
+  const icon = SERVICE_ICONS[t.service_type] || SERVICE_ICONS[t.type] || '<span class="material-symbols-outlined">payments</span>';
   const isCredit = t.type === 'wallet_funding';
   const label = (t.service_type || t.type || 'transaction').replace(/_/g, ' ');
   return `
@@ -56,7 +56,7 @@ function renderList() {
   const box = document.getElementById('txnList');
   const filtered = applyClientFilters(allLoaded);
   if (!filtered.length) {
-    box.innerHTML = `<div class="empty-state"><div class="empty-state__icon">🧾</div><div class="empty-state__title">No transactions found</div><p>Try adjusting your filters.</p></div>`;
+    box.innerHTML = `<div class="empty-state"><div class="empty-state__icon"><span class="material-symbols-outlined">receipt_long</span></div><div class="empty-state__title">No transactions found</div><p>Try adjusting your filters.</p></div>`;
     return;
   }
   box.innerHTML = filtered.map(renderTxnRow).join('');

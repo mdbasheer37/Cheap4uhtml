@@ -15,7 +15,7 @@ const Purchase = (() => {
       <div class="modal-sheet">
         <div class="modal-header">
           <div class="modal-title">Enter Transaction PIN</div>
-          <button class="modal-close" type="button" id="pinModalClose">✕</button>
+          <button class="modal-close" type="button" id="pinModalClose"><span class="material-symbols-outlined">close</span></button>
         </div>
         <p class="small text-muted mb-16">Enter your 4–6 digit PIN to authorize this transaction.</p>
         <div class="field">
@@ -65,7 +65,7 @@ const Purchase = (() => {
   function renderSuccess(container, { title, message, rows = [] }) {
     container.innerHTML = `
       <div class="result-box">
-        <div class="result-box__icon result-box__icon--success">✓</div>
+        <div class="result-box__icon result-box__icon--success"><span class="material-symbols-outlined">check</span></div>
         <h3>${Utils.esc(title)}</h3>
         <p>${Utils.esc(message)}</p>
         ${rows.map(r => `
@@ -86,7 +86,7 @@ const Purchase = (() => {
   function renderError(container, message, retryFn) {
     container.innerHTML = `
       <div class="result-box">
-        <div class="result-box__icon result-box__icon--error">✕</div>
+        <div class="result-box__icon result-box__icon--error"><span class="material-symbols-outlined">close</span></div>
         <h3>Transaction Failed</h3>
         <p>${Utils.esc(message)}</p>
         <button class="btn btn-primary mt-24" id="purchaseRetryBtn">Try Again</button>

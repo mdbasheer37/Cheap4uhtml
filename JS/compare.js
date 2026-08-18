@@ -12,7 +12,7 @@ function renderDataComparison(d) {
   let html = '';
   if (d.best_value_plan) {
     html += `<div class="gradient-card gradient-card--blue mb-16">
-      <div class="small" style="opacity:.85;">🏆 Best Value</div>
+      <div class="small" style="opacity:.85;"><span class="material-symbols-outlined">emoji_events</span> Best Value</div>
       <div style="font-size:18px;font-weight:800;margin-top:4px;">${Utils.esc(d.best_value_plan.provider)} — ${Utils.esc(d.best_value_plan.size)}</div>
       <div class="small mt-8">${Utils.money(d.best_value_plan.price)} · Value score ${d.best_value_plan.value_score}/100</div>
     </div>`;
