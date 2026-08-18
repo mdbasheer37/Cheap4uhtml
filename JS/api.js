@@ -289,5 +289,18 @@ const Api = (() => {
       remove: (id) => del(`/api/reminders/${id}`),
       history: (params) => get('/api/reminders/history', params),
     },
+
+    // ── ADMIN (admin.py, prefix /api/admin) — gated in the UI to the same
+    // hardcoded admin emails / role the real app checks; also enforced
+    // server-side by admin.py's @admin_required regardless. ────────────
+    admin: {
+      users: () => get('/api/admin/users'),
+      blockUser: (userId) => post(`/api/admin/users/${userId}/block`, {}),
+      unblockUser: (userId) => post(`/api/admin/users/${userId}/unblock`, {}),
+      profit: () => get('/api/admin/profit'),
+      withdraw: (data) => post('/api/admin/profit/withdraw', data),
+      banks: () => get('/api/admin/banks'),
+      withdrawals: (params) => get('/api/admin/withdrawals', params),
+    },
   };
 })();
