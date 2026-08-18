@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Cheap4U Technology</title>
 <link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
   <div class="app-wrap">
     <div class="home-header">
       <div class="home-header__greeting">
-        <span class="ic">👤</span>
+        <span class="ic"><span class="material-symbols-outlined">person</span></span>
         <span id="greetingName">Hi there</span>
       </div>
-      <button class="home-header__bell" id="notifBell">🔔<span class="notif-dot hidden" id="notifDot"></span></button>
+      <button class="home-header__bell" id="notifBell"><span class="material-symbols-outlined">notifications</span><span class="notif-dot hidden" id="notifDot"></span></button>
     </div>
 
     <div class="balance-card">
@@ -65,7 +66,7 @@
     <div class="modal-sheet">
       <div class="modal-header">
         <div class="modal-title">Notifications</div>
-        <button class="modal-close" onclick="Utils.closeModal('notifModal')">✕</button>
+        <button class="modal-close" onclick="Utils.closeModal('notifModal')"><span class="material-symbols-outlined">close</span></button>
       </div>
       <div id="notifList"></div>
     </div>

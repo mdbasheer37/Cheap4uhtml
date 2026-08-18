@@ -5,19 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spin & Win — Cheap4U Technology</title>
 <link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
   <div class="app-wrap">
     <div class="simple-topbar">
-      <button class="back-btn" onclick="history.back()">←</button>
+      <button class="back-btn" onclick="history.back()"><span class="material-symbols-outlined">arrow_back</span></button>
       <div class="simple-topbar__title">Spin & Win</div>
     </div>
 
     <div class="page-content page-content--noheader">
     <div class="wheel-wrap">
       <div class="wheel-container">
-        <div class="wheel-pointer">🔻</div>
+        <div class="wheel-pointer"><span class="material-symbols-outlined">arrow_drop_down</span></div>
         <canvas id="wheelCanvas" width="300" height="300"></canvas>
       </div>
       <p class="small text-muted mb-16" id="spinStatusMsg">Loading…</p>
@@ -39,7 +40,7 @@
   <div class="modal-backdrop" id="winModal">
     <div class="modal-sheet">
       <div class="result-box">
-        <div class="result-box__icon result-box__icon--success" id="winIcon">🎉</div>
+        <div class="result-box__icon result-box__icon--success" id="winIcon"><span class="material-symbols-outlined">celebration</span></div>
         <h3 id="winTitle">You won!</h3>
         <p id="winMessage"></p>
         <button class="btn btn-primary mt-24" onclick="Utils.closeModal('winModal')">Nice!</button>

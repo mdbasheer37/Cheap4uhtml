@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beneficiaries — Cheap4U Technology</title>
 <link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
   <div class="app-wrap">
     <div class="simple-topbar">
-      <button class="back-btn" onclick="history.back()">←</button>
+      <button class="back-btn" onclick="history.back()"><span class="material-symbols-outlined">arrow_back</span></button>
       <div class="simple-topbar__title">Beneficiaries</div>
     </div>
     <div class="page-content page-content--noheader">
@@ -24,7 +25,7 @@
     <div class="modal-sheet">
       <div class="modal-header">
         <div class="modal-title">Add Beneficiary</div>
-        <button class="modal-close" onclick="Utils.closeModal('beneficiaryModal')">✕</button>
+        <button class="modal-close" onclick="Utils.closeModal('beneficiaryModal')"><span class="material-symbols-outlined">close</span></button>
       </div>
       <form id="beneficiaryForm" novalidate>
         <div class="field">
@@ -69,7 +70,7 @@
       const box = document.getElementById('beneficiaryList');
       box.innerHTML = list.length ? `<div class="card">` + list.map((b, i) => `
         <div class="txn-row">
-          <div class="txn-row__icon">👤</div>
+          <div class="txn-row__icon"><span class="material-symbols-outlined">person</span></div>
           <div class="txn-row__body">
             <div class="txn-row__title" style="text-transform:none;">${Utils.esc(b.name)}</div>
             <div class="txn-row__meta">${Utils.esc(b.phone)} · ${Utils.esc(b.network)}</div>

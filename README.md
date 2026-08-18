@@ -39,6 +39,8 @@ on auth screens, icon-grid Quick Actions/Services on the dashboard, and
 the real 4-tab bottom nav (Home / History / Support / Profile) instead of
 a sidebar.
 
+**Icons** — swapped emoji placeholders for Google's **Material Symbols Outlined** font (loaded via CDN), mapped to the closest equivalents of the actual Material Design Icon names your real app uses (extracted directly from `Cheap4u.py`'s `icon:` properties — e.g. `account-circle`→`account_circle`, `wallet`→`account_balance_wallet`, `trophy`→`emoji_events`). This is visually much closer to the KivyMD icon set than emoji. Rank medals (🥇🥈🥉) were intentionally kept as emoji since their gold/silver/bronze coloring carries meaning no icon glyph replaces.
+
 **Quick PIN unlock** — replicates the real app's device-local convenience
 feature exactly: after a full email/password login, the app can save a
 PIN (SHA-256 hashed client-side against the email, stored with the

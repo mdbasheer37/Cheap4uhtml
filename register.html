@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create Account — Cheap4U Technology</title>
 <link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
 <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
@@ -17,24 +18,24 @@
       <div class="auth-card">
         <form id="registerForm" novalidate>
           <div class="auth-field" id="f-name">
-            <span class="ic">👤</span>
+            <span class="ic"><span class="material-symbols-outlined">person</span></span>
             <input type="text" id="name" placeholder="Full Name" autocomplete="name" required>
           </div>
           <div class="auth-field" id="f-email">
-            <span class="ic">✉</span>
+            <span class="ic"><span class="material-symbols-outlined">mail</span></span>
             <input type="email" id="email" placeholder="Email" autocomplete="email" required>
           </div>
           <div class="auth-field" id="f-phone">
-            <span class="ic">📞</span>
+            <span class="ic"><span class="material-symbols-outlined">call</span></span>
             <input type="tel" id="phone" placeholder="Phone Number" maxlength="11" autocomplete="tel" required>
           </div>
           <div class="auth-field" id="f-password">
-            <span class="ic">🔑</span>
+            <span class="ic"><span class="material-symbols-outlined">lock</span></span>
             <input type="password" id="password" placeholder="Password (min 6 characters)" autocomplete="new-password" required>
-            <button type="button" class="input-group__icon" id="togglePw" style="position:static;margin-left:4px;">👁️</button>
+            <button type="button" class="input-group__icon" id="togglePw" style="position:static;margin-left:4px;"><span class="material-symbols-outlined">visibility</span></button>
           </div>
           <div class="auth-field" style="border-color:var(--gray-200);">
-            <span class="ic" style="color:var(--gray-500);">➕</span>
+            <span class="ic" style="color:var(--gray-500);"><span class="material-symbols-outlined">add</span></span>
             <input type="text" id="ref" placeholder="Referral Code (Optional)" style="color:var(--gray-900);">
           </div>
           <button type="submit" class="btn btn-primary btn-block" id="registerBtn">REGISTER</button>
