@@ -53,7 +53,7 @@ async function loadChallenge() {
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(w.user_name || w.name || 'Winner')} — ${Utils.esc(w.month || '')}</div>
           <div class="txn-row__meta">${Utils.esc(w.rank_label || w.reward_position || '')}</div>
         </div>
-        <div class="txn-row__amount" style="color:var(--green-600);">${Utils.money(w.reward_amount)}</div>
+        <div class="txn-row__amount" style="color:var(--green);">${Utils.money(w.reward_amount)}</div>
       </div>`).join('') : `<div class="empty-state small">No winners announced yet.</div>`;
   } catch {
     document.getElementById('winnersList').innerHTML = `<div class="empty-state small">Could not load past winners.</div>`;

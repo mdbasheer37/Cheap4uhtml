@@ -46,7 +46,7 @@ async function loadCashback() {
           <div class="txn-row__title">${Utils.esc((e.category || e.type || '').replace(/_/g,' '))}</div>
           <div class="txn-row__meta">${Utils.dateFmt(e.created_at)}${e.note ? ' · ' + Utils.esc(e.note) : ''}</div>
         </div>
-        <div class="txn-row__amount" style="color:${e.type === 'earned' || e.type === 'admin_credit' ? 'var(--green-600)' : 'var(--gray-900)'}">
+        <div class="txn-row__amount" style="color:${e.type === 'earned' || e.type === 'admin_credit' ? 'var(--green)' : 'var(--gray-900)'}">
           ${e.type === 'earned' || e.type === 'admin_credit' ? '+' : '-'}${Utils.money(e.amount)}
         </div>
       </div>`).join('') : `<div class="empty-state small">No cashback activity yet.</div>`;

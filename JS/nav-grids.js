@@ -5,44 +5,49 @@
  * "Coming Soon" placeholders in the real app itself (Transfer to Banks,
  * Transfer to Cheap4U, Smile Voice, Bulk SMS, Betting, Gift Cards) —
  * confirmed directly from Cheap4u.py's show_coming_soon() calls.
+ *
+ * Each icon carries its own accent `color`, matching the real app's
+ * per-icon coloring (every tile icon there is a distinct color, not a
+ * single uniform tone) — restored here after the icon-font migration
+ * had accidentally dropped it.
  */
 
 const QUICK_ACTIONS = [
-  { label: 'Funding', icon: '<span class="material-symbols-outlined">credit_card</span>', href: 'wallet.html' },
-  { label: 'Transfer to Banks', icon: '<span class="material-symbols-outlined">account_balance</span>', comingSoon: true },
-  { label: 'Transfer to Cheap4U', icon: '<span class="material-symbols-outlined">person</span>', comingSoon: true },
-  { label: 'Refer', icon: '<span class="material-symbols-outlined">add</span>', href: 'referral.html' },
-  { label: 'Cashback', icon: '<span class="material-symbols-outlined">undo</span>', href: 'cashback.html' },
-  { label: 'Spin & Win', icon: '<span class="material-symbols-outlined">casino</span>', href: 'spin.html' },
-  { label: 'Coupons', icon: '<span class="material-symbols-outlined">sell</span>', href: 'coupons.html' },
-  { label: 'Merchant', icon: '<span class="material-symbols-outlined">work</span>', href: 'merchant.html' },
-  { label: 'Dollar Card', icon: '<span class="material-symbols-outlined">credit_card</span>', href: 'card.html' },
-  { label: 'Reminders', icon: '<span class="material-symbols-outlined">notifications</span>', href: 'reminders.html' },
-  { label: 'Compare', icon: '<span class="material-symbols-outlined">bar_chart</span>', href: 'compare.html' },
-  { label: 'Rewards', icon: '<span class="material-symbols-outlined">emoji_events</span>', href: 'rewards.html' },
+  { label: 'Funding', icon: 'credit_card', color: '#2196F3', href: 'wallet.html' },
+  { label: 'Transfer to Banks', icon: 'account_balance', color: '#2196F3', comingSoon: true },
+  { label: 'Transfer to Cheap4U', icon: 'person', color: '#2196F3', comingSoon: true },
+  { label: 'Refer', icon: 'person_add', color: '#8E24AA', href: 'referral.html' },
+  { label: 'Cashback', icon: 'undo', color: '#43A047', href: 'cashback.html' },
+  { label: 'Spin & Win', icon: 'casino', color: '#FB8C00', href: 'spin.html' },
+  { label: 'Coupons', icon: 'sell', color: '#7E57C2', href: 'coupons.html' },
+  { label: 'Merchant', icon: 'work', color: '#43A047', href: 'merchant.html' },
+  { label: 'Dollar Card', icon: 'credit_card', color: '#5E35B1', href: 'card.html' },
+  { label: 'Reminders', icon: 'notifications', color: '#FFA000', href: 'reminders.html' },
+  { label: 'Compare', icon: 'bar_chart', color: '#00897B', href: 'compare.html' },
+  { label: 'Rewards', icon: 'emoji_events', color: '#FFA000', href: 'rewards.html' },
 ];
 
 const SERVICES = [
-  { label: 'Airtime', icon: '<span class="material-symbols-outlined">call</span>', href: 'airtime.html' },
-  { label: 'Data', icon: '<span class="material-symbols-outlined">wifi</span>', href: 'data.html' },
-  { label: 'Smile Voice', icon: '<span class="material-symbols-outlined">sentiment_satisfied</span>', comingSoon: true },
-  { label: 'Electricity', icon: '<span class="material-symbols-outlined">bolt</span>', href: 'electricity.html' },
-  { label: 'Cable Sub', icon: '<span class="material-symbols-outlined">tv</span>', href: 'cable.html' },
-  { label: 'Bulk SMS', icon: '<span class="material-symbols-outlined">chat</span>', comingSoon: true },
-  { label: 'Code4Balance', icon: '</>', href: 'code4balance.html' },
-  { label: 'Exam PIN', icon: '<span class="material-symbols-outlined">edit_note</span>', href: 'exampin.html' },
-  { label: 'Beneficiary', icon: '<span class="material-symbols-outlined">person</span>', href: 'beneficiary.html' },
-  { label: 'Pricing', icon: '<span class="material-symbols-outlined">payments</span>', href: 'pricing.html' },
-  { label: 'Upgrade', icon: '<span class="material-symbols-outlined">arrow_upward</span>', href: 'upgrade.html' },
-  { label: 'Betting', icon: '<span class="material-symbols-outlined">sports_soccer</span>', comingSoon: true },
-  { label: 'Gift Cards', icon: '<span class="material-symbols-outlined">redeem</span>', comingSoon: true },
-  { label: 'Airtime to Cash', icon: '<span class="material-symbols-outlined">repeat</span>', href: 'airtime-to-cash.html' },
+  { label: 'Airtime', icon: 'call', color: '#FF7043', href: 'airtime.html' },
+  { label: 'Data', icon: 'wifi', color: '#2196F3', href: 'data.html' },
+  { label: 'Smile Voice', icon: 'sentiment_satisfied', color: '#43A047', comingSoon: true },
+  { label: 'Electricity', icon: 'bolt', color: '#43A047', href: 'electricity.html' },
+  { label: 'Cable Sub', icon: 'tv', color: '#43A047', href: 'cable.html' },
+  { label: 'Bulk SMS', icon: 'chat', color: '#FB8C00', comingSoon: true },
+  { label: 'Code4Balance', icon: 'code', color: '#E53935', href: 'code4balance.html' },
+  { label: 'Exam PIN', icon: 'edit_note', color: '#2196F3', href: 'exampin.html' },
+  { label: 'Beneficiary', icon: 'perm_contact_calendar', color: '#FB8C00', href: 'beneficiary.html' },
+  { label: 'Pricing', icon: 'payments', color: '#43A047', href: 'pricing.html' },
+  { label: 'Upgrade', icon: 'person_add', color: '#FB8C00', href: 'upgrade.html' },
+  { label: 'Betting', icon: 'sports_soccer', color: '#43A047', comingSoon: true },
+  { label: 'Gift Cards', icon: 'redeem', color: '#EC407A', comingSoon: true },
+  { label: 'Airtime to Cash', icon: 'repeat', color: '#FB8C00', href: 'airtime-to-cash.html' },
 ];
 
 function renderTileGrid(container, items, tileClass = 'grid-tile') {
   container.innerHTML = items.map(item => `
     <div class="${tileClass}" data-href="${item.href || ''}" data-coming-soon="${item.comingSoon ? item.label : ''}">
-      <span class="ic">${item.icon}</span>
+      <span class="ic" style="color:${item.color};"><span class="material-symbols-outlined">${item.icon}</span></span>
       <span>${item.label}</span>
     </div>`).join('');
   container.querySelectorAll('[data-href], [data-coming-soon]').forEach(el => {

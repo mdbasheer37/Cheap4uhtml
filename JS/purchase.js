@@ -23,7 +23,7 @@ const Purchase = (() => {
           <div class="field-error" id="pinModalError">Incorrect PIN. Try again.</div>
         </div>
         <button class="btn btn-primary btn-block" id="pinModalConfirm">Confirm</button>
-        <p class="small text-center mt-16"><a href="profile.html" style="color:var(--blue-600);font-weight:700;">No PIN set? Set one here</a></p>
+        <p class="small text-center mt-16"><a href="profile.html" style="color:var(--blue);font-weight:700;">No PIN set? Set one here</a></p>
       </div>`;
     document.body.appendChild(el);
     document.getElementById('pinModalClose').addEventListener('click', () => Utils.closeModal('pinModal'));

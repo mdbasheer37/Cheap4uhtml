@@ -86,7 +86,7 @@ async function loadHistory() {
           <div class="txn-row__title" style="text-transform:none;">${Utils.esc(r.label)}</div>
           <div class="txn-row__meta">${Utils.dateFmt(r.created_at)} · ${r.is_free_spin ? 'Free spin' : 'Paid spin'}</div>
         </div>
-        <div class="txn-row__amount" style="color:${r.reward_value > 0 ? 'var(--green-600)' : 'var(--gray-500)'}">
+        <div class="txn-row__amount" style="color:${r.reward_value > 0 ? 'var(--green)' : 'var(--gray-500)'}">
           ${r.reward_value > 0 ? '+' + Utils.money(r.reward_value) : '—'}
         </div>
       </div>`).join('') : `<div class="empty-state small">No spins yet — give it a try!</div>`;

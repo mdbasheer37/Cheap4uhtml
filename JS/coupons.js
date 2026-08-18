@@ -19,12 +19,12 @@ async function submitValidate(e) {
     const res = await Api.coupons.validate({ code, category: category || undefined, amount });
     const d = res.data;
     box.innerHTML = `
-      <div class="empty-state" style="padding:16px;background:var(--green-50);border-radius:12px;color:var(--green-600);text-align:left;">
+      <div class="empty-state" style="padding:16px;background:var(--green-tint);border-radius:12px;color:var(--green);text-align:left;">
         <b>${Utils.esc(d.code)}</b> is valid — you save ${Utils.money(d.discount_amount)}.
         Final amount: ${Utils.money(d.final_amount)}.
       </div>`;
   } catch (err) {
-    box.innerHTML = `<div class="empty-state" style="padding:16px;background:var(--red-50);border-radius:12px;color:var(--red-600);text-align:left;">${Utils.esc(err.message)}</div>`;
+    box.innerHTML = `<div class="empty-state" style="padding:16px;background:var(--red-tint);border-radius:12px;color:var(--red);text-align:left;">${Utils.esc(err.message)}</div>`;
   } finally {
     Utils.setButtonLoading(btn, false);
   }

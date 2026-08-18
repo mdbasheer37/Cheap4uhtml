@@ -61,7 +61,7 @@ async function loadReferral() {
             <div class="txn-row__title" style="text-transform:none;">${Utils.esc(t.type.replace(/_/g,' '))} — ${Utils.esc(t.referred_user_name)}</div>
             <div class="txn-row__meta">${Utils.esc(t.created_at)}</div>
           </div>
-          <div class="txn-row__amount" style="color:var(--green-600);">+${Utils.money(t.amount)}</div>
+          <div class="txn-row__amount" style="color:var(--green);">+${Utils.money(t.amount)}</div>
         </div>`).join('')
       : `<div class="empty-state small">No referral bonus history yet.</div>`;
   } else {

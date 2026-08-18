@@ -34,7 +34,7 @@ function renderTxnRow(t) {
         <div class="txn-row__meta">${Utils.esc(t.reference || '')} · ${Utils.dateFmt(t.created_at || t.date)}</div>
       </div>
       <div>
-        <div class="txn-row__amount" style="color:${isCredit ? 'var(--green-600)' : 'var(--gray-900)'}">
+        <div class="txn-row__amount" style="color:${isCredit ? 'var(--green)' : 'var(--gray-900)'}">
           ${isCredit ? '+' : '-'}${Utils.money(t.amount)}
         </div>
         <div style="text-align:right;margin-top:4px;">${Utils.statusBadge(t.status)}</div>
