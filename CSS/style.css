@@ -427,10 +427,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 html.theme-dark body { background: #121212; color: #e5e7eb; }
 html.theme-dark .card, html.theme-dark .app-wrap, html.theme-dark .bottom-nav,
 html.theme-dark .menu-list, html.theme-dark .grid-tile--service,
-html.theme-dark .simple-topbar, html.theme-dark .provider-item, html.theme-dark .plan-item {
-  background: #1e1e1e; color: #e5e7eb; border-color: #333;
+html.theme-dark .simple-topbar, html.theme-dark .provider-item, html.theme-dark .plan-item,
+html.theme-dark .grid-tile, html.theme-dark .account-number-card,
+html.theme-dark .support-tile, html.theme-dark .auth-card, html.theme-dark .modal-sheet,
+html.theme-dark .stat-card {
+  background: #26263a; color: #e5e7eb; border-color: #333;
 }
 html.theme-dark .menu-item { border-color: #2a2a2a; }
 html.theme-dark .txn-row { border-color: #2a2a2a; }
 html.theme-dark .input { background: #1e1e1e; color: #e5e7eb; border-color: #333; }
 html.theme-dark .text-muted { color: #9ca3af; }
+html.theme-dark .grid-tile span, html.theme-dark .home-header__greeting span { color: #e5e7eb; }
+html.theme-dark .home-header__greeting .ic { color: var(--blue-light); }
+/* The blue balance/challenge/gradient cards stay exactly as bright as in
+   light mode — confirmed from the real app's own dark-mode screenshots. */
