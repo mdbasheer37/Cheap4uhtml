@@ -29,14 +29,19 @@
             <span class="ic"><span class="material-symbols-outlined">call</span></span>
             <input type="tel" id="phone" placeholder="Phone Number" maxlength="11" autocomplete="tel" required>
           </div>
-          <div class="auth-field" id="f-password">
-            <span class="ic"><span class="material-symbols-outlined">lock</span></span>
-            <input type="password" id="password" placeholder="Password (min 6 characters)" autocomplete="new-password" required>
-            <button type="button" class="input-group__icon" id="togglePw" style="position:static;margin-left:4px;"><span class="material-symbols-outlined">visibility</span></button>
-          </div>
           <div class="auth-field" style="border-color:var(--gray-200);">
             <span class="ic" style="color:var(--gray-500);"><span class="material-symbols-outlined">add</span></span>
             <input type="text" id="ref" placeholder="Referral Code (Optional)" style="color:var(--gray-900);">
+          </div>
+          <div class="auth-field" id="f-password">
+            <span class="ic"><span class="material-symbols-outlined">lock</span></span>
+            <input type="password" id="password" placeholder="Password" autocomplete="new-password" required>
+            <button type="button" class="input-group__icon" id="togglePw" style="position:static;margin-left:4px;"><span class="material-symbols-outlined">visibility</span></button>
+          </div>
+          <div class="auth-field" id="f-confirm">
+            <span class="ic"><span class="material-symbols-outlined">lock</span></span>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required>
+            <button type="button" class="input-group__icon" id="toggleConfirmPw" style="position:static;margin-left:4px;"><span class="material-symbols-outlined">visibility</span></button>
           </div>
           <button type="submit" class="btn btn-primary btn-block" id="registerBtn">REGISTER</button>
         </form>
@@ -57,6 +62,11 @@
       const pw = document.getElementById('password');
       pw.type = pw.type === 'password' ? 'text' : 'password';
     });
+    document.getElementById('toggleConfirmPw').addEventListener('click', () => {
+      const pw = document.getElementById('confirmPassword');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+
 
     const refFromLink = Utils.qparam('ref');
     if (refFromLink) document.getElementById('ref').value = refFromLink;
@@ -67,6 +77,7 @@
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
       const referral_code = document.getElementById('ref').value.trim();
 
       let valid = true;
@@ -75,7 +86,15 @@
       setErr('f-email', Utils.isValidEmail(email));
       setErr('f-phone', Utils.isValidPhone(phone));
       setErr('f-password', password.length >= 6);
-      if (!valid) { Utils.toast('Please check the highlighted fields', 'error'); return; }
+      setErr('f-confirm', confirmPassword === password && confirmPassword.length >= 6);
+      if (!valid) {
+        if (password.length >= 6 && confirmPassword !== password) {
+          Utils.toast('Passwords do not match', 'error');
+        } else {
+          Utils.toast('Please check the highlighted fields', 'error');
+        }
+        return;
+      }
 
       const btn = document.getElementById('registerBtn');
       Utils.setButtonLoading(btn, true, 'Creating account…');

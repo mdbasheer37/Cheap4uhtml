@@ -16,8 +16,12 @@
     <div class="pin-unlock-card">
       <div class="pin-unlock-field">
         <span class="ic"><span class="material-symbols-outlined">shield</span></span>
-        <input type="password" id="pinInput" inputmode="numeric" maxlength="6" placeholder="Enter your PIN">
+        <div style="flex:1;">
+          <label for="pinInput" style="display:block;color:var(--blue);font-size:15px;margin-bottom:4px;">Enter your PIN</label>
+          <input type="password" id="pinInput" inputmode="numeric" maxlength="6" style="width:100%;border:none;outline:none;font-size:17px;letter-spacing:3px;background:transparent;">
+        </div>
       </div>
+      <div style="text-align:right;margin:-16px 0 24px;color:var(--gray-500);font-size:13px;" id="pinCounter">0/6</div>
       <button class="btn btn-primary btn-block" id="unlockBtn">UNLOCK</button>
       <p class="pin-unlock-switch"><a id="useFullLogin">Not you? Use email &amp; password</a></p>
     </div>
@@ -37,6 +41,9 @@
     }
 
     document.getElementById('pinInput').focus();
+    document.getElementById('pinInput').addEventListener('input', (e) => {
+      document.getElementById('pinCounter').textContent = `${e.target.value.length}/6`;
+    });
 
     async function attemptUnlock() {
       const pin = document.getElementById('pinInput').value.trim();
@@ -50,6 +57,7 @@
         window.location.href = 'dashboard.html';
       } else {
         document.getElementById('pinInput').value = '';
+        document.getElementById('pinCounter').textContent = '0/6';
         Utils.toast('Incorrect PIN', 'error');
       }
     }

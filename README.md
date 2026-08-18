@@ -108,6 +108,34 @@ Electricity provider names seeded in `init_plans.py` don't match the
 `DISCO_ID_MAP` keys used to validate purchases in `cheapdatahub.py` — see
 the comment block at the top of `JS/electricity.js`.
 
+## Round 3 changes — matched against real live-app screenshots
+
+- **Dark mode** extended to cover Quick Actions tiles, the account-number
+  card, and every other surface — the blue balance/challenge cards stay
+  exactly as bright in dark mode as light, matching the real app's own
+  dark-mode screenshots.
+- **Register page** — reordered fields to match exactly (Name → Email →
+  Phone → Referral Code → Password → Confirm Password) and added the
+  Confirm Password field that was missing.
+- **PIN unlock screen** — added the `0/6` live character counter.
+- **Profile menu** — added the "My Profile" entry card and "Upgrade
+  account" item that were missing.
+- **New: `my-profile.html`** — the account-details screen (avatar, name,
+  membership tier, verified/unverified badge, Email/Phone/Member
+  Since/Last Active). Edit Profile and Change Password are handled
+  honestly: the real app's own `show_edit_profile`/`update_password`
+  functions are dead local-only code from before backend integration
+  (they write to an in-memory dict, never call the API) — there is no
+  backend endpoint to update name/email/phone or change password while
+  authenticated. So Edit Profile says so plainly instead of faking a
+  save, and Change Password reuses the real, working OTP-based
+  forgot-password → reset-password flow.
+- **New: `profit.html`, `withdraw.html`, `admin-users.html`** — the
+  Admin Profit Dashboard, Withdraw Profit, and Manage Users screens,
+  gated in the UI the same way the real app gates them (hardcoded admin
+  email/role check — also enforced server-side by `admin.py`), wired to
+  the real `/api/admin/*` routes.
+
 ## Things that could only be verified against a live deployment
 
 - Whether all provider API keys (Paystack, VTUNaija, CheapDataHub, Gemini)

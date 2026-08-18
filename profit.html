@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Profit Dashboard — Cheap4U Technology</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+<link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <div class="blob-header" style="border-radius:0 0 26px 26px;padding:18px;text-align:left;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="back-btn" style="position:static;" onclick="history.back()"><span class="material-symbols-outlined">arrow_back</span></button>
+        <h1 style="color:#fff;flex:1;">Admin Profit Dashboard</h1>
+        <button class="back-btn" style="position:static;" onclick="window.location.href='admin-users.html'"><span class="material-symbols-outlined">account_balance</span></button>
+        <button class="back-btn" style="position:static;" id="refreshBtn"><span class="material-symbols-outlined">refresh</span></button>
+      </div>
+    </div>
+
+    <div class="page-content page-content--noheader" style="margin-top:-20px;">
+      <div class="card mb-16">
+        <a href="admin-users.html" class="btn btn-primary btn-block">VIEW &amp; MANAGE USERS</a>
+      </div>
+
+      <div class="gradient-card gradient-card--green mb-16 text-center">
+        <div>Available Profit</div>
+        <div style="font-size:34px;font-weight:800;" id="availableProfit">—</div>
+        <div class="small mt-8" id="totalEarned" style="opacity:.9;"></div>
+      </div>
+
+      <div class="card mb-16" id="categoryBreakdown"><div class="skel" style="height:40px;"></div></div>
+
+      <a href="withdraw.html" class="btn btn-danger btn-block mb-24">WITHDRAW PROFIT</a>
+
+      <div class="section-title" style="padding:0 0 8px;">Withdrawal History</div>
+      <div id="withdrawalHistory"><div class="skel" style="height:60px;"></div></div>
+    </div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="JS/api.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/auth.js"></script>
+  <script src="JS/profit.js"></script>
+</body>
+</html>
